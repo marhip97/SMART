@@ -27,7 +27,7 @@ Utvikle SMART – et automatisert kryssjekkrammeverk og dashboard som genererer 
 
 ### 2.3 Suksesskriterier
 - Dashboard publisert på GitHub Pages og oppdateres automatisk minst månedlig.
-- Minst 5 makrovariabler dekket i versjon 1 (forslag: BNP Fastlands-Norge, KPI/KPI-JAE, arbeidsledighet, styringsrente, EUR/NOK).
+- Minst 5 makrovariabler dekket i versjon 1 (forslag: BNP Fastlands-Norge, KPI, KPI-JAE, arbeidsledighet, styringsrente, Lønnsvekst, boligpriser).
 - Minst 3 modeller per variabel, med dokumentert backtesting.
 - Modulær arkitektur: ny variabel eller ny modell skal kunne legges til uten å bryte eksisterende kode.
 
@@ -51,6 +51,7 @@ Prosjektet utvikles av Claude Code som representerer prosjektgruppen gjennom spe
 | **Kvant/statistiker** | Subagent | Implementering av modeller, backtesting, evalueringsmetrikker, ensembling |
 | **Frontend/dashboard-utvikler** | Subagent | Dashboard på GitHub Pages, visualiseringer, UX |
 | **DevOps** | Subagent | GitHub Actions, deployment, automasjon, miljøhåndtering |
+| **Kvalitetssikrer* | Subagent | risikostyring, kvalitetssikrer |
 | **QA/dokumentasjon** | Subagent | Tester, README, modellkort, brukerveiledning |
 
 ### 3.2 Eskaleringsregler
