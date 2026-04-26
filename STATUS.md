@@ -18,6 +18,8 @@ Levende status- og fremdriftsprotokoll. Oppdateres av prosjektleder (Claude Code
 | 3 | **Prognosehorisont** | 1–3 år (årsvis veksttakt for variabelen), kvantiler 10/50/90 |
 | 4 | **Oppdateringsfrekvens** | Ukentlig pipeline-kjøring |
 | 5 | **Kodelisens** | MIT |
+| 6 | **Betingingsvariabler** | Oljepris (Brent/FRED), EUR/NOK (Norges Bank), handelspartnervekst (Norges Bank/IMF), ECB-rente (FRED), K2-kredittvekst (Norges Bank) |
+| 7 | **Fleksibilitet** | All variabeldefinisjon i `config/variables.yaml` – ny variabel legges til med YAML-oppføring, ingen kodeendring |
 
 ## Til avklaring (åpne spørsmål til prosjekteier)
 
@@ -29,6 +31,12 @@ Levende status- og fremdriftsprotokoll. Oppdateres av prosjektleder (Claude Code
 ---
 
 ## Logg
+
+### 2026-04-26 – M0 tilleggsavklaring: betingingsvariabler og fleksibilitet
+- Vedtatt å skille mellom målvariabler (7 stk.) og betingingsvariabler (eksogene).
+- Betingingsvariabler inn i M1-pipeline fra start: oljepris, EUR/NOK, handelspartnervekst, ECB-rente, K2-kredittvekst.
+- Arkitekturprinsipp bekreftet: all variabeldefinisjon i `config/variables.yaml` – ny variabel krever bare YAML-oppføring.
+- M0 endelig lukket. Starter M1-implementering.
 
 ### 2026-04-26 – M0 fullført, M1 planlegging
 - Mottok svar fra prosjekteier på alle fem avklaringspunkter.
