@@ -23,6 +23,23 @@ models:
       information_criterion: aic
       seasonal: false
 
+  - id: bvar
+    class: BVARModel
+    applies_to:
+      - bnp_fastland
+      - kpi
+      - kpi_jae
+      - ledighet_nav
+      - styringsrente
+      - lonnsvekst
+      - boligprisvekst
+    uses_exog: false
+    params:
+      n_lags: 2
+      lambda1: 0.2
+      lambda2: 0.5
+      n_draws: 500
+
   - id: var
     class: VARModel
     applies_to:

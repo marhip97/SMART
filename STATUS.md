@@ -32,6 +32,14 @@ Levende status- og fremdriftsprotokoll. Oppdateres av prosjektleder (Claude Code
 
 ## Logg
 
+### 2026-04-26 – M2 tillegg: BVAR med Minnesota-prior
+- BVARModel implementert fra scratch (numpy/scipy, ingen nye avhengigheter)
+- Minnesota-prior: eget-lag-varians > kryss-lag-varians, shrinkage skalerer med 1/lag
+- Posterior analytisk beregnet (betinget på OLS Σ); MC-trekk for kvantiler
+- 15 nye tester (inkl. korrekt prior-retning, reproduserbarhet, stramhets-monotonicitet)
+- 69/69 tester grønt totalt
+- docs/models/bvar.md opprettet med referanser til Litterman (1986)
+
 ### 2026-04-26 – M2 fullført: modeller v1
 - Abstrakt `BaseModel`-grensesnitt med `fit` / `predict` / `evaluate` og standardisert `ForecastResult` / `EvaluationResult`
 - `config/models.yaml`: alle 5 modeller konfigurert
