@@ -1,0 +1,156 @@
+# SMART – variabelkonfigurasjon
+#
+# Legg til en ny variabel ved å kopiere en eksisterende blokk og justere feltene.
+# Ingen kodeendring nødvendig – pipeline-runneren itererer over denne listen.
+#
+# Felt:
+#   id:          Unik nøkkel brukt i filnavn og modellkode
+#   name:        Lesbar navn
+#   type:        "target" (vi forecaster) eller "conditioning" (eksogen input)
+#   unit:        Enhet for lagret serie (pct_yoy = prosent år/år, pct = prosent, index = indeks)
+#   source:      Datakilde-klasse som håndterer henting
+#   frequency:   Datapunktets frekvens (monthly / quarterly / annual)
+#   transform:   Transformasjon som beregnes ved prosessering (yoy_pct = år/år-vekst, level = ingen)
+#   source_params: Kilde-spesifikke parametre (tabell-ID, serie-kode osv.)
+
+variables:
+
+  # ── Målvariabler (target) ───────────────────────────────────────────────────
+
+  - id: bnp_fastland
+    name: BNP-vekst Fastlands-Norge
+    type: target
+    unit: pct_yoy
+    source: SSBDataSource
+    frequency: quarterly
+    transform: yoy_pct
+    source_params:
+      table_id: "09190"
+      filters:
+        ContentsCode: ["BNPB"]
+        Tid: ["*"]
+
+  - id: kpi
+    name: Konsumprisindeksen (KPI)
+    type: target
+    unit: pct_yoy
+    source: SSBDataSource
+    frequency: monthly
+    transform: yoy_pct
+    source_params:
+      table_id: "03013"
+      filters:
+        ContentsCode: ["Tolvmanedersendring"]
+        Tid: ["*"]
+
+  - id: kpi_jae
+    name: KPI justert for avgifter og energi (KPI-JAE)
+    type: target
+    unit: pct_yoy
+    source: SSBDataSource
+    frequency: monthly
+    transform: yoy_pct
+    source_params:
+      table_id: "10235"
+      filters:
+        ContentsCode: ["Tolvmanedersendring"]
+        Tid: ["*"]
+
+  - id: ledighet_nav
+    name: Registrert ledighet (NAV)
+    type: target
+    unit: pct
+    source: NAVDataSource
+    frequency: monthly
+    transform: level
+    source_params:
+      series: "registrert_ledige_pct"
+
+  - id: styringsrente
+    name: Styringsrenten (Norges Bank)
+    type: target
+    unit: pct
+    source: NorgesBankDataSource
+    frequency: monthly
+    transform: level
+    source_params:
+      series: "SIREN"
+
+  - id: lonnsvekst
+    name: Lønnsvekst (årslønn, alle næringer)
+    type: target
+    unit: pct_yoy
+    source: SSBDataSource
+    frequency: annual
+    transform: yoy_pct
+    source_params:
+      table_id: "11417"
+      filters:
+        ContentsCode: ["Lonn"]
+        Tid: ["*"]
+
+  - id: boligprisvekst
+    name: Boligprisvekst (SSB boligprisindeks)
+    type: target
+    unit: pct_yoy
+    source: SSBDataSource
+    frequency: quarterly
+    transform: yoy_pct
+    source_params:
+      table_id: "07230"
+      filters:
+        ContentsCode: ["KvPris"]
+        Boligtype: ["00"]
+        Tid: ["*"]
+
+  # ── Betingingsvariabler (conditioning) ─────────────────────────────────────
+
+  - id: oljepris
+    name: Råoljepris (Brent, USD/fat)
+    type: conditioning
+    unit: usd
+    source: FREDDataSource
+    frequency: monthly
+    transform: level
+    source_params:
+      series_id: "DCOILBRENTEU"
+
+  - id: eurnok
+    name: EUR/NOK valutakurs
+    type: conditioning
+    unit: nok_per_eur
+    source: NorgesBankDataSource
+    frequency: monthly
+    transform: level
+    source_params:
+      series: "EURNOK"
+
+  - id: ecb_rente
+    name: ECB innskuddsrente
+    type: conditioning
+    unit: pct
+    source: FREDDataSource
+    frequency: monthly
+    transform: level
+    source_params:
+      series_id: "ECBDFR"
+
+  - id: handelspartnervekst
+    name: Handelspartnernes BNP-vekst
+    type: conditioning
+    unit: pct_yoy
+    source: NorgesBankDataSource
+    frequency: quarterly
+    transform: level
+    source_params:
+      series: "TPGDP"
+
+  - id: k2_kredittvekst
+    name: Kredittvekst husholdninger (K2)
+    type: conditioning
+    unit: pct_yoy
+    source: NorgesBankDataSource
+    frequency: monthly
+    transform: level
+    source_params:
+      series: "K2_HOUSEHOLDS_YOY"
