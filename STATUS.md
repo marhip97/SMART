@@ -26,6 +26,11 @@ Følgende er løftet til prosjekteier og venter på svar før M1 kan starte:
 
 ## Logg
 
+### 2026-04-26 – Sesjon 2 oppstart
+- Leste prosjektplan.md, CLAUDE.md og STATUS.md.
+- Fase: M0 – avventer svar på de fem avklaringspunktene fra prosjekteier.
+- Plan for sesjonen: Stille de fem M0-spørsmålene, motta svar, oppdatere STATUS.md, og foreslå arbeidsplan for M1.
+
 ### 2026-04-26 – Prosjektoppstart
 - Prosjektplan (`prosjektplan.md`) opprettet og lastet til repo.
 - Operativ instruks for utviklingsagenter (`CLAUDE.md`) opprettet.
