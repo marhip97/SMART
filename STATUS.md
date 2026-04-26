@@ -7,17 +7,21 @@ Levende status- og fremdriftsprotokoll. Oppdateres av prosjektleder (Claude Code
 ---
 
 ## Gjeldende fase
-**M0 – Oppstart og avklaring**
+**M1 – Datapipeline**
+
+## M0-beslutninger (vedtatt 2026-04-26)
+
+| # | Tema | Beslutning |
+|---|---|---|
+| 1 | **Variabler v1** | BNP-vekst Fastlands-Norge, KPI, KPI-JAE, registrert ledighet, styringsrente, lønnsvekst, boligprisvekst (7 variabler) |
+| 2 | **Modeller v1** | ARIMA, VAR/BVAR, Dynamic Factor Model, AR-X, ML-baseline (random forest/gradient boosting) |
+| 3 | **Prognosehorisont** | 1–3 år (årsvis veksttakt for variabelen), kvantiler 10/50/90 |
+| 4 | **Oppdateringsfrekvens** | Ukentlig pipeline-kjøring |
+| 5 | **Kodelisens** | MIT |
 
 ## Til avklaring (åpne spørsmål til prosjekteier)
 
-Følgende er løftet til prosjekteier og venter på svar før M1 kan starte:
-
-1. **Variabelutvalg v1** – Forslag: BNP Fastlands-Norge, KPI/KPI-JAE, AKU-ledighet, styringsrente, EUR/NOK. Skal noe legges til/fjernes?
-2. **Modellutvalg v1** – Forslag: ARIMA, VAR/BVAR, Dynamic Factor Model, AR-X, ML-baseline. OK?
-3. **Prognosehorisont og kvantiler** – 1–3 år, kvantiler 10/50/90?
-4. **Oppdateringsfrekvens** – Daglig data-pull, ukentlig modellkjøring, månedlig full backtest?
-5. **Kodelisens** – MIT, Apache 2.0 eller annet?
+*(Ingen åpne punkter.)*
 
 ## Risikoer som har materialisert seg
 *(Ingen registrert ennå.)*
@@ -25,6 +29,15 @@ Følgende er løftet til prosjekteier og venter på svar før M1 kan starte:
 ---
 
 ## Logg
+
+### 2026-04-26 – M0 fullført, M1 planlegging
+- Mottok svar fra prosjekteier på alle fem avklaringspunkter.
+- M0-beslutninger dokumentert over.
+- Viktigste justeringer fra opprinnelig forslag:
+  - Variabler: registrert ledighet (NAV) i stedet for AKU-ledighet (SSB); lagt til lønnsvekst og boligprisvekst; EUR/NOK fjernet.
+  - Oppdateringsfrekvens: ukentlig (ikke daglig data-pull + ukentlig modell).
+  - Prognoseuttrykk: årsvis veksttakt (%) – ikke nivå.
+- M0 lukkes. Starter M1-planlegging.
 
 ### 2026-04-26 – Sesjon 2 oppstart
 - Leste prosjektplan.md, CLAUDE.md og STATUS.md.
@@ -35,7 +48,6 @@ Følgende er løftet til prosjekteier og venter på svar før M1 kan starte:
 - Prosjektplan (`prosjektplan.md`) opprettet og lastet til repo.
 - Operativ instruks for utviklingsagenter (`CLAUDE.md`) opprettet.
 - Denne statusprotokollen (`STATUS.md`) opprettet.
-- **Neste:** Avvente prosjekteiers svar på avklaringspunkter 1–5 over, deretter starte M1 (datapipeline).
 
 ---
 
@@ -43,8 +55,8 @@ Følgende er løftet til prosjekteier og venter på svar før M1 kan starte:
 
 | Milepæl | Status | Dato fullført |
 |---|---|---|
-| M0 – Oppstart og avklaring | 🟡 Pågår – avventer prosjekteier | – |
-| M1 – Datapipeline | ⚪ Ikke startet | – |
+| M0 – Oppstart og avklaring | 🟢 Fullført | 2026-04-26 |
+| M1 – Datapipeline | 🟡 Pågår | – |
 | M2 – Modeller v1 | ⚪ Ikke startet | – |
 | M3 – Kryssjekk og ensemble | ⚪ Ikke startet | – |
 | M4 – Dashboard v1 | ⚪ Ikke startet | – |
