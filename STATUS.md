@@ -7,7 +7,7 @@ Levende status- og fremdriftsprotokoll. Oppdateres av prosjektleder (Claude Code
 ---
 
 ## Gjeldende fase
-**M2 – Modeller v1** (M1 fullført 2026-04-26)
+**M3 – Kryssjekk og ensemble** (M2 fullført 2026-04-26)
 
 ## M0-beslutninger (vedtatt 2026-04-26)
 
@@ -31,6 +31,20 @@ Levende status- og fremdriftsprotokoll. Oppdateres av prosjektleder (Claude Code
 ---
 
 ## Logg
+
+### 2026-04-26 – M2 fullført: modeller v1
+- Abstrakt `BaseModel`-grensesnitt med `fit` / `predict` / `evaluate` og standardisert `ForecastResult` / `EvaluationResult`
+- `config/models.yaml`: alle 5 modeller konfigurert
+- Implementert: `ARIMAModel`, `VARModel` (m/ AR-fallback for enkelt-serie), `DFMModel`, `ARXModel`, `MLBaselineModel`
+- Walk-forward backtesting i `src/models/utils.py` (deles av alle modeller)
+- 54/54 tester grønt (inkl. 25 nye modell-tester på syntetisk data), ruff ren
+- Modellkort for alle 5 modeller i `docs/models/`
+- Viktige designvalg: VAR degraderer til AR for enkelt-variable; DFM bruker statsmodels DynamicFactorMQ; ML-baseline bruker approksimativ kvantilestimering via trefordeling
+- **Neste:** M3 – kryssjekk og ensemble (avviksmål, vekting, aggregert prognose)
+
+### 2026-04-26 – M2 oppstart: modellimplementasjon
+- M1 PR merget til main. Branch synkronisert.
+- Starter implementering av modell-lag: abstrakt grensesnitt, ARIMA, VAR, DFM, AR-X, ML-baseline.
 
 ### 2026-04-26 – M1 fullført: datapipeline
 - Repo-struktur opprettet (`src/data/`, `config/`, `tests/`, `docs/`, `data/`, `.github/workflows/`)
@@ -79,7 +93,7 @@ Levende status- og fremdriftsprotokoll. Oppdateres av prosjektleder (Claude Code
 |---|---|---|
 | M0 – Oppstart og avklaring | 🟢 Fullført | 2026-04-26 |
 | M1 – Datapipeline | 🟢 Fullført | 2026-04-26 |
-| M2 – Modeller v1 | ⚪ Ikke startet | – |
+| M2 – Modeller v1 | 🟢 Fullført | 2026-04-26 |
 | M3 – Kryssjekk og ensemble | ⚪ Ikke startet | – |
 | M4 – Dashboard v1 | ⚪ Ikke startet | – |
 | M5 – QA, dokumentasjon, lansering | ⚪ Ikke startet | – |

@@ -1,0 +1,66 @@
+# SMART – modellkonfigurasjon
+#
+# Legg til en ny modell ved å kopiere en eksisterende blokk og justere feltene.
+# Pipeline-runneren itererer over denne listen.
+#
+# Felt:
+#   id:          Unik nøkkel (brukes i ForecastResult og filnavn)
+#   class:       Klassenavn i src/models/
+#   applies_to:  Liste av variable_id-er modellen kjøres på ("all" = alle målvariabler)
+#   uses_exog:   Bruker eksogene/betingingsvariabler (true/false)
+#   params:      Modell-spesifikke hyperparametre
+
+models:
+
+  - id: arima
+    class: ARIMAModel
+    applies_to: all
+    uses_exog: false
+    params:
+      max_p: 4
+      max_q: 2
+      max_d: 2
+      information_criterion: aic
+      seasonal: false
+
+  - id: var
+    class: VARModel
+    applies_to:
+      - bnp_fastland
+      - kpi
+      - kpi_jae
+      - ledighet_nav
+      - styringsrente
+      - lonnsvekst
+      - boligprisvekst
+    uses_exog: false
+    params:
+      max_lags: 4
+      ic: aic
+
+  - id: dfm
+    class: DFMModel
+    applies_to: all
+    uses_exog: false
+    params:
+      n_factors: 2
+      factor_order: 1
+      error_order: 1
+
+  - id: arx
+    class: ARXModel
+    applies_to: all
+    uses_exog: true
+    params:
+      max_lags: 4
+      exog_lags: 1
+
+  - id: ml_baseline
+    class: MLBaselineModel
+    applies_to: all
+    uses_exog: true
+    params:
+      n_estimators: 200
+      max_depth: 4
+      lags: [1, 2, 4]
+      random_state: 42
