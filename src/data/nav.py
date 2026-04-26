@@ -5,6 +5,7 @@ from __future__ import annotations
 import logging
 from typing import Any
 
+import pandas as pd
 import requests
 
 from .base import DataSource, _assert_columns, _assert_no_nulls

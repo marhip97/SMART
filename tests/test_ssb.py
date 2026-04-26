@@ -1,7 +1,5 @@
 """Unit tests for SSBDataSource using mocked HTTP responses."""
 
-import json
-
 import pandas as pd
 import pytest
 import responses as resp_lib

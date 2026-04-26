@@ -3,8 +3,6 @@
 import pandas as pd
 import pytest
 from unittest.mock import MagicMock, patch
-from pathlib import Path
-
 from src.data.pipeline import build_source, load_config, run_pipeline
 
 
