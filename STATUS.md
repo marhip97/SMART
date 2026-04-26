@@ -7,7 +7,7 @@ Levende status- og fremdriftsprotokoll. Oppdateres av prosjektleder (Claude Code
 ---
 
 ## Gjeldende fase
-**M1 – Datapipeline**
+**M2 – Modeller v1** (M1 fullført 2026-04-26)
 
 ## M0-beslutninger (vedtatt 2026-04-26)
 
@@ -31,6 +31,20 @@ Levende status- og fremdriftsprotokoll. Oppdateres av prosjektleder (Claude Code
 ---
 
 ## Logg
+
+### 2026-04-26 – M1 fullført: datapipeline
+- Repo-struktur opprettet (`src/data/`, `config/`, `tests/`, `docs/`, `data/`, `.github/workflows/`)
+- `config/variables.yaml`: alle 12 variabler definert (7 målvariabler + 5 betingingsvariabler)
+- Abstrakt `DataSource`-baseklasse med `fetch`, `validate`, `store`, `run`
+- Implementerte hentere: `SSBDataSource` (JSON-stat2, ingen pyjstat-avh.), `NAVDataSource`, `NorgesBankDataSource` (SDMX-JSON), `FREDDataSource` (CSV)
+- `pipeline.py`: itererer over YAML-config – ny variabel krever kun YAML-oppføring
+- 29/29 enhetstester grønt (pytest, mocked HTTP via `responses`)
+- GitHub Actions: `data_pipeline.yml` (ukentlig mandag 06:00 UTC) + `tests.yml` (CI på push/PR)
+- Lisensvilkår verifisert for alle kilder: SSB/NAV (NLOD 2.0), Norges Bank (CC BY 4.0), FRED (ikke-kommersiell)
+- `docs/data-sources.md` og 12 variabelbeskrivelser under `docs/variables/`
+- `README.md` og `LICENSE` (MIT) opprettet
+- Viktig: `pyjstat` ikke tilgjengelig i miljøet – erstattet med innebygd JSON-stat2-parser
+- **Neste:** M2 – modellimplementasjon (ARIMA, VAR/BVAR, DFM, AR-X, ML-baseline)
 
 ### 2026-04-26 – M0 tilleggsavklaring: betingingsvariabler og fleksibilitet
 - Vedtatt å skille mellom målvariabler (7 stk.) og betingingsvariabler (eksogene).
@@ -64,7 +78,7 @@ Levende status- og fremdriftsprotokoll. Oppdateres av prosjektleder (Claude Code
 | Milepæl | Status | Dato fullført |
 |---|---|---|
 | M0 – Oppstart og avklaring | 🟢 Fullført | 2026-04-26 |
-| M1 – Datapipeline | 🟡 Pågår | – |
+| M1 – Datapipeline | 🟢 Fullført | 2026-04-26 |
 | M2 – Modeller v1 | ⚪ Ikke startet | – |
 | M3 – Kryssjekk og ensemble | ⚪ Ikke startet | – |
 | M4 – Dashboard v1 | ⚪ Ikke startet | – |

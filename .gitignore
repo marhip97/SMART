@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+.env
+.venv/
+venv/
+*.parquet
+data/raw/
+data/processed/
+.pytest_cache/
+.coverage
+htmlcov/
+.ruff_cache/
