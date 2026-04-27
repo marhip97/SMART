@@ -18,5 +18,8 @@ jobs:
 
       - run: pip install requests
 
-      - name: Run discovery script
+      - name: Search SSB for KPI-JAE tables
+        run: python -m scripts.discover_api --search "konsumpris justert"
+
+      - name: Run full discovery script
         run: python -m scripts.discover_api

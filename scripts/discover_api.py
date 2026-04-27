@@ -3,10 +3,12 @@
 Run manually to find the correct filter values for config/variables.yaml:
 
     python -m scripts.discover_api
+    python -m scripts.discover_api --search "konsumpris justert"
 """
 
 from __future__ import annotations
 
+import argparse
 import requests
 
 SSB_API_BASE = "https://data.ssb.no/api/v0/no/table"
@@ -14,7 +16,7 @@ NBD_BASE = "https://data.norges-bank.no/api/data"
 
 SSB_TABLES = {
     "bnp_fastland":   "09190",
-    "kpi_jae":        "10235",
+    "kpi":            "03013",
     "ledighet_nav":   "05111",
     "lonnsvekst":     "11417",
     "boligprisvekst": "07230",
@@ -42,6 +44,35 @@ NB_PROBE: dict[str, list[str]] = {
         f"{NBD_BASE}/CR?format=sdmx-json&startPeriod=2020-01-01",
     ],
 }
+
+
+def search_ssb(query: str, max_results: int = 30) -> None:
+    """Search SSB's table catalog and print matching table IDs and titles."""
+    url = f"{SSB_API_BASE}/"
+    params = {"query": query, "language": "no"}
+    print(f"\n═══ SSB table search: '{query}' ═══")
+    try:
+        r = requests.get(url, params=params, timeout=30)
+        r.raise_for_status()
+        results = r.json()
+        if isinstance(results, list):
+            tables = results[:max_results]
+        elif isinstance(results, dict) and "tables" in results:
+            tables = results["tables"][:max_results]
+        else:
+            print(f"Unexpected response shape: {type(results)}")
+            print(str(results)[:1000])
+            return
+        if not tables:
+            print("  (no results)")
+            return
+        for t in tables:
+            tid  = t.get("id", t.get("tableId", "?"))
+            title = t.get("title", t.get("text", "?"))
+            updated = t.get("updated", "")
+            print(f"  {tid}  {title}  [{updated}]")
+    except Exception as exc:
+        print(f"  ERROR: {exc}")
 
 
 def check_ssb_tables() -> None:
@@ -94,7 +125,26 @@ def check_nb_series() -> None:
                 print(f"  ✗ ERROR  {url}  {exc}")
 
 
-if __name__ == "__main__":
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Inspect SSB/Norges Bank API metadata.")
+    parser.add_argument("--search", metavar="QUERY",
+                        help="Search SSB table catalog and exit")
+    parser.add_argument("--table", metavar="ID",
+                        help="Inspect a single SSB table by ID and exit")
+    args = parser.parse_args()
+
+    if args.search:
+        search_ssb(args.search)
+        return
+    if args.table:
+        from src.data.discover_api import inspect_table
+        inspect_table(args.table, max_values=100)
+        return
+
     check_ssb_tables()
     check_nb_series()
     print("\nDone.")
+
+
+if __name__ == "__main__":
+    main()
