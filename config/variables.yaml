@@ -55,8 +55,8 @@ variables:
     source_params:
       table_id: "03013"
       filters:
-        Konsumgrp: ["KPIJAE"]         # Kode uten bindestrek (SSB-kode for KPI-JAE-aggregat)
-        ContentsCode: ["Tolvmanedersendring"]
+        Konsumgrp: ["TOTAL"]
+        ContentsCode: ["KPIJAEEnd"]   # Forsøk: KPI-JAE tolvmånedersvekst som ContentCode
         Tid: ["*"]
 
   - id: ledighet_aku

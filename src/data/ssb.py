@@ -76,10 +76,13 @@ class SSBDataSource(DataSource):
 
             invalid = [v for v in vals if v not in valid_dims[dim]]
             if invalid:
+                all_vals = valid_dims[dim]
+                display = all_vals if len(all_vals) <= 60 else all_vals[:60]
+                suffix = f" … ({len(all_vals)} total)" if len(all_vals) > 60 else ""
                 raise ValueError(
                     f"SSB table {self.table_id}, dimension '{dim}': "
                     f"value(s) {invalid} not found.\n"
-                    f"  Valid values (first 30): {valid_dims[dim][:30]}"
+                    f"  Valid values: {display}{suffix}"
                 )
 
         # Warn about required dimensions that are missing from the filter
