@@ -86,12 +86,28 @@ class NorgesBankDataSource(DataSource):
 def _parse_sdmx_json(data: dict) -> pd.DataFrame:
     """Extract a date/value DataFrame from a Norges Bank SDMX-JSON response.
 
-    When the response contains multiple series (e.g. full dataflow query),
-    the first series in the response is used.
+    When the response contains multiple series (e.g. a full dataflow query),
+    the series with the most non-null numeric observations is used.
     """
     try:
         series_dict = data["data"]["dataSets"][0]["series"]
-        series_key = next(iter(series_dict))          # first (or only) series
+
+        # Pick the series with the most finite (non-null) observations
+        def _count_finite(obs: dict) -> int:
+            count = 0
+            for v_list in obs.values():
+                try:
+                    if v_list and v_list[0] is not None and float(v_list[0]) == float(v_list[0]):
+                        count += 1
+                except (TypeError, ValueError):
+                    pass
+            return count
+
+        series_key = max(series_dict, key=lambda k: _count_finite(series_dict[k]["observations"]))
+        if len(series_dict) > 1:
+            logger.debug("SHORT_RATES: selected series '%s' (%d obs) from %d candidates.",
+                         series_key, _count_finite(series_dict[series_key]["observations"]),
+                         len(series_dict))
         observations = series_dict[series_key]["observations"]
 
         time_periods = data["data"]["structure"]["dimensions"]["observation"]
