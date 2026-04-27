@@ -32,6 +32,12 @@ Levende status- og fremdriftsprotokoll. Oppdateres av prosjektleder (Claude Code
 
 ## Logg
 
+### 2026-04-27 – Orkestrering: modellkjørings-pipeline
+- `src/runner.py`: leser siste datavintagé → kjører alle modeller → ensemble → lagrer JSON til `data/processed/forecasts/<var>/latest.json`
+- `data/processed/forecasts/manifest.json` oppdateres hver kjøring
+- `.github/workflows/data_pipeline.yml` utvidet med jobb `run-models` som kjøres etter `fetch-data`
+- 20 nye tester (113/113 totalt), ruff ren
+
 ### 2026-04-27 – M3 fullført: kryssjekk og ensemble
 - `src/ensemble/disagreement.py`: `DisagreementReport` + `compute_disagreement()` + `disagreement_to_dataframe()`
 - `src/ensemble/forecaster.py`: `EnsembleForecaster` med tre vektingsordninger (equal, performance, trimmed) + `_apply_weight_floor()` (iterativ redistribuering)
