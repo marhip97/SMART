@@ -151,18 +151,18 @@ variables:
     name: Handelspartnernes BNP-vekst
     type: conditioning
     unit: pct_yoy
-    source: NorgesBankDataSource
+    source: FREDDataSource
     frequency: quarterly
     transform: level
     source_params:
-      series: "TPGDP"
+      series_id: "CLVMNACSCAB1GQEA19"   # Euro area real GDP, proxy for trading partner growth
 
   - id: k2_kredittvekst
     name: Kredittvekst husholdninger (K2)
     type: conditioning
     unit: pct_yoy
-    source: NorgesBankDataSource
+    source: FREDDataSource
     frequency: monthly
     transform: level
     source_params:
-      series: "K2_HOUSEHOLDS_YOY"
+      series_id: "CRDQNO2PAPT"   # BIS Norway total credit / GDP, closest available proxy
