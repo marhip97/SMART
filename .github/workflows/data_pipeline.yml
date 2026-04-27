@@ -8,15 +8,19 @@ on:
     branches: [main]
     paths:
       - "config/variables.yaml"
+      - "config/models.yaml"
       - "src/data/**"
+      - "src/models/**"
+      - "src/ensemble/**"
+      - "src/runner.py"
   workflow_dispatch:  # Tillat manuell kjøring
 
 jobs:
   fetch-data:
-    name: Fetch and store data
+    name: Fetch data
     runs-on: ubuntu-latest
     permissions:
-      contents: write  # Trengs for å committe oppdatert data
+      contents: write
 
     steps:
       - name: Checkout repository
@@ -38,10 +42,48 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/raw/ data/processed/
+          git add data/raw/
           if git diff --cached --quiet; then
-            echo "No new data to commit."
+            echo "No new data – skipping data commit."
           else
-            git commit -m "chore: ukentlig dataoppdatering $(date -u +%Y-%m-%d)"
+            git commit -m "chore: data vintage $(date -u +%Y-%m-%d)"
+            git push
+          fi
+
+  run-models:
+    name: Run models and ensemble
+    needs: fetch-data
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Pull the latest commit (may include data committed by fetch-data)
+          ref: main
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run model runner
+        run: python -m src.runner
+
+      - name: Commit forecast results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/processed/forecasts/
+          if git diff --cached --quiet; then
+            echo "No new forecasts – skipping forecast commit."
+          else
+            git commit -m "chore: prognoseresultater $(date -u +%Y-%m-%d)"
             git push
           fi
