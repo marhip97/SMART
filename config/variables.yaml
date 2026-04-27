@@ -55,7 +55,7 @@ variables:
     source_params:
       table_id: "03013"
       filters:
-        Konsumgrp: ["KPI-JAE"]
+        Konsumgrp: ["KPIJAE"]         # Kode uten bindestrek (SSB-kode for KPI-JAE-aggregat)
         ContentsCode: ["Tolvmanedersendring"]
         Tid: ["*"]
 
@@ -156,4 +156,17 @@ variables:
     source_params:
       series_id: "CLVMNACSCAB1GQEA19"   # Euro area real GDP, proxy for trading partner growth
 
-  # k2_kredittvekst: ingen bekreftet åpen kilde funnet; utelatt inntil videre
+  - id: k2_kredittvekst
+    name: Tolvmånedersvekst innenlandsgjeld K2 (SSB tabell 11599)
+    type: conditioning
+    unit: pct_yoy
+    source: SSBDataSource
+    frequency: monthly
+    transform: level
+    source_params:
+      table_id: "11599"
+      filters:
+        Valuta: ["00"]        # Total (K2 inkl. NOK og valuta)
+        Lantaker2: ["Kred01"] # Publikum
+        ContentsCode: ["AarsTrans2"]  # 12-månedersvekst, prosent
+        Tid: ["*"]
