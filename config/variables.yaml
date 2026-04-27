@@ -27,7 +27,8 @@ variables:
     source_params:
       table_id: "09190"
       filters:
-        ContentsCode: ["BNPB"]
+        Makrost: ["bnpb.nr23_9fn"]
+        ContentsCode: ["Volum"]
         Tid: ["*"]
 
   - id: kpi
@@ -40,6 +41,7 @@ variables:
     source_params:
       table_id: "03013"
       filters:
+        Konsumgrp: ["TOTAL"]
         ContentsCode: ["Tolvmanedersendring"]
         Tid: ["*"]
 
@@ -51,20 +53,28 @@ variables:
     frequency: monthly
     transform: yoy_pct
     source_params:
-      table_id: "10235"
+      table_id: "14702"
       filters:
+        KPIavledetSerie: ["KPI-JAE"]
         ContentsCode: ["Tolvmanedersendring"]
+        Leveringssektor: ["0"]   # 0 = totalt; metadata-validering viser gyldige koder ved feil
         Tid: ["*"]
 
-  - id: ledighet_nav
-    name: Registrert ledighet (NAV)
+  - id: ledighet_aku
+    name: AKU-arbeidsledighet (SSB, 15–74 år)
     type: target
     unit: pct
-    source: NAVDataSource
+    source: SSBDataSource
     frequency: monthly
     transform: level
     source_params:
-      series: "registrert_ledige_pct"
+      table_id: "05111"
+      filters:
+        ArbStyrkStatus: ["2"]
+        Kjonn: ["0"]
+        Alder: ["15-74"]
+        ContentsCode: ["Prosent"]
+        Tid: ["*"]
 
   - id: styringsrente
     name: Styringsrenten (Norges Bank)
@@ -86,21 +96,23 @@ variables:
     source_params:
       table_id: "11417"
       filters:
-        ContentsCode: ["Lonn"]
+        NACE2007: ["A-S"]
+        ContentsCode: ["ArslonnEndring"]
         Tid: ["*"]
 
   - id: boligprisvekst
-    name: Boligprisvekst (SSB boligprisindeks)
+    name: Boligprisvekst (SSB boligprisindeks, nivå)
     type: target
-    unit: pct_yoy
+    unit: index
     source: SSBDataSource
     frequency: quarterly
     transform: yoy_pct
     source_params:
       table_id: "07230"
       filters:
-        ContentsCode: ["KvPris"]
+        Region: ["TOTAL"]
         Boligtype: ["00"]
+        ContentsCode: ["BruktBlindex"]
         Tid: ["*"]
 
   # ── Betingingsvariabler (conditioning) ─────────────────────────────────────
