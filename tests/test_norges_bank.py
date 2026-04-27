@@ -70,7 +70,7 @@ def test_fetch_parses_sdmx():
     payload = _sdmx_payload(["2023-01", "2023-02"], [3.0, 3.25])
     resp_lib.add(
         resp_lib.GET,
-        "https://data.norges-bank.no/api/data/IR/NO/B.SIREN.SR.D",
+        "https://data.norges-bank.no/api/data/IR/B.SIREN.SR.D",
         json=payload,
         status=200,
     )

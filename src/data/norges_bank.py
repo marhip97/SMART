@@ -48,7 +48,7 @@ class NorgesBankDataSource(DataSource):
             "Fetching Norges Bank series '%s' (flow=%s) for variable '%s'.",
             self.series_key, self.dataflow, self.variable_id,
         )
-        url = f"{NBD_BASE}/{self.dataflow}/NO/{self.series_id}"
+        url = f"{NBD_BASE}/{self.dataflow}/{self.series_id}"
         params = {
             "format": "sdmx-json",
             "startPeriod": "1990-01-01",
