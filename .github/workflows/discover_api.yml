@@ -1,0 +1,22 @@
+name: Discover API metadata
+
+on:
+  workflow_dispatch:  # Kun manuell kjøring
+
+jobs:
+  discover:
+    name: Print SSB and Norges Bank dimension codes
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - run: pip install requests
+
+      - name: Run discovery script
+        run: python -m scripts.discover_api

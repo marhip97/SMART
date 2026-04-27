@@ -29,7 +29,7 @@ models:
       - bnp_fastland
       - kpi
       - kpi_jae
-      - ledighet_nav
+      - ledighet_aku
       - styringsrente
       - lonnsvekst
       - boligprisvekst
@@ -46,7 +46,7 @@ models:
       - bnp_fastland
       - kpi
       - kpi_jae
-      - ledighet_nav
+      - ledighet_aku
       - styringsrente
       - lonnsvekst
       - boligprisvekst
