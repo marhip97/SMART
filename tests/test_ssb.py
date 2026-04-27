@@ -81,13 +81,23 @@ def test_validate_empty_raises():
         source.validate(pd.DataFrame({"date": [], "value": []}))
 
 
-def test_validate_too_many_nulls_raises():
+def test_validate_null_values_dropped():
+    """Null value rows are silently dropped (provisional data expected)."""
     source = SSBDataSource("kpi", {"table_id": "03013", "filters": {}})
     df = _make_df(
         ["2022-01-01", "2022-02-01", "2022-03-01"],
         [None, None, 3.5],
     )
-    with pytest.raises(ValueError, match="null"):
+    result = source.validate(df)
+    assert len(result) == 1
+    assert result["value"].iloc[0] == pytest.approx(3.5)
+
+
+def test_validate_all_nulls_raises():
+    """If all value rows are null after dropping, raise ValueError."""
+    source = SSBDataSource("kpi", {"table_id": "03013", "filters": {}})
+    df = _make_df(["2022-01-01", "2022-02-01"], [None, None])
+    with pytest.raises(ValueError, match="no valid value rows"):
         source.validate(df)
 
 

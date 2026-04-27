@@ -129,11 +129,16 @@ class SSBDataSource(DataSource):
         if len(df) == 0:
             raise ValueError(f"Empty DataFrame for variable '{self.variable_id}'.")
         _assert_no_nulls(df, ["date"])
-        null_values = df["value"].isna().sum()
-        if null_values / len(df) > 0.1:
-            raise ValueError(
-                f"Variable '{self.variable_id}': more than 10% null values ({null_values}/{len(df)})."
+        # Drop null value rows (provisional/unpublished years are expected to be missing)
+        n_null = df["value"].isna().sum()
+        if n_null:
+            logger.warning(
+                "Variable '%s': dropping %d null value row(s) (provisional data).",
+                self.variable_id, n_null,
             )
+            df = df.dropna(subset=["value"])
+        if len(df) == 0:
+            raise ValueError(f"Variable '{self.variable_id}': no valid value rows after dropping nulls.")
         return df
 
 

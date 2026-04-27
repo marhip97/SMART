@@ -53,11 +53,10 @@ variables:
     frequency: monthly
     transform: yoy_pct
     source_params:
-      table_id: "14702"
+      table_id: "03013"
       filters:
-        KPIavledetSerie: ["KPI-JAE"]
+        Konsumgrp: ["KPI-JAE"]
         ContentsCode: ["Tolvmanedersendring"]
-        Leveringssektor: ["0"]   # 0 = totalt; metadata-validering viser gyldige koder ved feil
         Tid: ["*"]
 
   - id: ledighet_aku
@@ -151,18 +150,10 @@ variables:
     name: Handelspartnernes BNP-vekst
     type: conditioning
     unit: pct_yoy
-    source: NorgesBankDataSource
+    source: FREDDataSource
     frequency: quarterly
     transform: level
     source_params:
-      series: "TPGDP"
+      series_id: "CLVMNACSCAB1GQEA19"   # Euro area real GDP, proxy for trading partner growth
 
-  - id: k2_kredittvekst
-    name: Kredittvekst husholdninger (K2)
-    type: conditioning
-    unit: pct_yoy
-    source: NorgesBankDataSource
-    frequency: monthly
-    transform: level
-    source_params:
-      series: "K2_HOUSEHOLDS_YOY"
+  # k2_kredittvekst: ingen bekreftet åpen kilde funnet; utelatt inntil videre

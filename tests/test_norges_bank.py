@@ -1,23 +1,21 @@
 """Unit tests for NorgesBankDataSource using mocked HTTP responses."""
 
+import pandas as pd
 import pytest
 import responses as resp_lib
 
 from src.data.norges_bank import NorgesBankDataSource, _parse_sdmx_json
-import pandas as pd
 
 
 def _sdmx_payload(periods: list[str], values: list[float]) -> dict:
-    """Build a minimal SDMX-JSON payload."""
+    """Build a minimal SDMX-JSON payload (single series)."""
     return {
         "data": {
             "dataSets": [
                 {
                     "series": {
                         "0:0:0:0": {
-                            "observations": {
-                                str(i): [v] for i, v in enumerate(values)
-                            }
+                            "observations": {str(i): [v] for i, v in enumerate(values)}
                         }
                     }
                 }
@@ -44,6 +42,35 @@ def test_parse_sdmx_json_basic():
     assert df["value"].iloc[2] == pytest.approx(3.5)
 
 
+def test_parse_sdmx_json_multiple_series_takes_first():
+    """When response contains multiple series, the first one is used."""
+    payload = {
+        "data": {
+            "dataSets": [
+                {
+                    "series": {
+                        "0:0:0:0": {"observations": {"0": [3.0], "1": [3.25]}},
+                        "1:0:0:0": {"observations": {"0": [99.0], "1": [99.0]}},
+                    }
+                }
+            ],
+            "structure": {
+                "dimensions": {
+                    "observation": [
+                        {
+                            "id": "TIME_PERIOD",
+                            "values": [{"id": "2023-01"}, {"id": "2023-02"}],
+                        }
+                    ]
+                }
+            },
+        }
+    }
+    df = _parse_sdmx_json(payload)
+    assert len(df) == 2
+    assert df["value"].iloc[0] == pytest.approx(3.0)
+
+
 def test_unknown_series_raises():
     with pytest.raises(ValueError, match="Unknown"):
         NorgesBankDataSource("bad", {"series": "NONEXISTENT"})
@@ -55,8 +82,7 @@ def test_validate_ok():
         "date": pd.to_datetime(["2023-01-01", "2023-02-01"]),
         "value": [3.0, 3.25],
     })
-    result = source.validate(df)
-    assert len(result) == 2
+    assert len(source.validate(df)) == 2
 
 
 def test_validate_empty_raises():
@@ -66,15 +92,32 @@ def test_validate_empty_raises():
 
 
 @resp_lib.activate
-def test_fetch_parses_sdmx():
+def test_fetch_siren_uses_broad_dataflow_url():
+    """SIREN fetches SHORT_RATES without a series key (empty series_id)."""
     payload = _sdmx_payload(["2023-01", "2023-02"], [3.0, 3.25])
     resp_lib.add(
         resp_lib.GET,
-        "https://data.norges-bank.no/api/data/SHORT_RATES/B.SIGHT_DEP_RATE.NOK.D",
+        "https://data.norges-bank.no/api/data/SHORT_RATES",
         json=payload,
         status=200,
     )
     source = NorgesBankDataSource("styringsrente", {"series": "SIREN"})
+    df = source.fetch()
+    assert list(df.columns) == ["date", "value"]
+    assert len(df) == 2
+
+
+@resp_lib.activate
+def test_fetch_eurnok_uses_specific_key():
+    """EURNOK fetches EXR/B.EUR.NOK.SP with the confirmed series key."""
+    payload = _sdmx_payload(["2023-01", "2023-02"], [11.2, 11.5])
+    resp_lib.add(
+        resp_lib.GET,
+        "https://data.norges-bank.no/api/data/EXR/B.EUR.NOK.SP",
+        json=payload,
+        status=200,
+    )
+    source = NorgesBankDataSource("eurnok", {"series": "EURNOK"})
     df = source.fetch()
     assert list(df.columns) == ["date", "value"]
     assert len(df) == 2
