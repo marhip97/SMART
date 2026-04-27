@@ -7,7 +7,7 @@ Levende status- og fremdriftsprotokoll. Oppdateres av prosjektleder (Claude Code
 ---
 
 ## Gjeldende fase
-**M3 – Kryssjekk og ensemble** (M2 fullført 2026-04-26)
+**M4 – Dashboard v1** (M3 fullført 2026-04-27)
 
 ## M0-beslutninger (vedtatt 2026-04-26)
 
@@ -31,6 +31,17 @@ Levende status- og fremdriftsprotokoll. Oppdateres av prosjektleder (Claude Code
 ---
 
 ## Logg
+
+### 2026-04-27 – M3 fullført: kryssjekk og ensemble
+- `src/ensemble/disagreement.py`: `DisagreementReport` + `compute_disagreement()` + `disagreement_to_dataframe()`
+- `src/ensemble/forecaster.py`: `EnsembleForecaster` med tre vektingsordninger (equal, performance, trimmed) + `_apply_weight_floor()` (iterativ redistribuering)
+- Konservative kvantilgrenser: q10 = 10. persentil av modell-q10s, q90 = 90. persentil av modell-q90s
+- 24 nye tester, 93/93 grønt totalt, ruff ren
+- **Neste:** M4 – Dashboard v1
+
+### 2026-04-26 – M3 oppstart: kryssjekk og ensemble
+- M2 PR merget til main. Branch synkronisert.
+- Starter implementering av ensemble-lag: avviksmål, vekting, aggregert prognose.
 
 ### 2026-04-26 – M2 tillegg: BVAR med Minnesota-prior
 - BVARModel implementert fra scratch (numpy/scipy, ingen nye avhengigheter)
@@ -102,7 +113,7 @@ Levende status- og fremdriftsprotokoll. Oppdateres av prosjektleder (Claude Code
 | M0 – Oppstart og avklaring | 🟢 Fullført | 2026-04-26 |
 | M1 – Datapipeline | 🟢 Fullført | 2026-04-26 |
 | M2 – Modeller v1 | 🟢 Fullført | 2026-04-26 |
-| M3 – Kryssjekk og ensemble | ⚪ Ikke startet | – |
+| M3 – Kryssjekk og ensemble | 🟢 Fullført | 2026-04-27 |
 | M4 – Dashboard v1 | ⚪ Ikke startet | – |
 | M5 – QA, dokumentasjon, lansering | ⚪ Ikke startet | – |
 | M6 – Drift og iterasjon | ⚪ Ikke startet | – |
