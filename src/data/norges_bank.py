@@ -17,12 +17,14 @@ logger = logging.getLogger(__name__)
 NBD_BASE = "https://data.norges-bank.no/api/data"
 
 # Series codes used in variables.yaml → NBD dataset/series mapping
+# Norges Bank SDMX-JSON REST API: https://data.norges-bank.no/api/data/{flow}/{key}
+# Confirmed dataflows: SHORT_RATES (interest rates), EXR (exchange rates)
 _SERIES_MAP: dict[str, tuple[str, str]] = {
     # series key → (NBD dataflow, series key within that flow)
-    "SIREN":             ("IR",  "B.SIREN.SR.D"),          # Styringsrente (daily → resample monthly)
-    "EURNOK":            ("EXR", "B.EUR.NOK.SP.A"),         # EUR/NOK spot, monthly average
-    "TPGDP":             ("MPM", "TPGDP_Q"),                # Handelspartnervekst (quarterly)
-    "K2_HOUSEHOLDS_YOY": ("CR",  "K2.H.12M.NOK"),          # K2 husholdninger, 12mnd-vekst
+    "SIREN":             ("SHORT_RATES", "B.SIGHT_DEP_RATE.NOK.D"),   # Styringsrente (daily → monthly)
+    "EURNOK":            ("EXR",         "B.EUR.NOK.SP"),              # EUR/NOK spot rate
+    "TPGDP":             ("MPM",         "TPGDP_Q"),                   # Handelspartnervekst (quarterly)
+    "K2_HOUSEHOLDS_YOY": ("CR",          "K2.H.12M.NOK"),             # K2 husholdninger 12mnd-vekst
 }
 
 
