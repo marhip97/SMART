@@ -7,7 +7,7 @@ Levende status- og fremdriftsprotokoll. Oppdateres av prosjektleder (Claude Code
 ---
 
 ## Gjeldende fase
-**M4 – Dashboard v1** (M3 fullført 2026-04-27)
+**M5 – QA, dokumentasjon, lansering** (M4 fullført 2026-04-27)
 
 ## M0-beslutninger (vedtatt 2026-04-26)
 
@@ -23,7 +23,11 @@ Levende status- og fremdriftsprotokoll. Oppdateres av prosjektleder (Claude Code
 
 ## Til avklaring (åpne spørsmål til prosjekteier)
 
-*(Ingen åpne punkter.)*
+### kpi_jae SSB-filter (oppdaget 2026-04-27)
+- **Hva**: `Konsumgrp: ["KPI-JAE"]` er ikke en gyldig kode i SSB tabell 03013 (tabell bruker COICOP-koder: TOTAL, 01, 02, ...).
+- **Alternativene**: (a) `Konsumgrp: ["KPIJAE"]` – bestemmelsen uten bindestrek kan være et SSB-spesifikt aggregat-kode; (b) bruk et annet SSB-tabellnummer dedikert til KPI-JAE.
+- **Anbefaling**: Konfigurasjonen er oppdatert til `KPIJAE` (uten bindestrek). Neste CI-kjøring bekrefter om dette er gyldig; ved feil vises full kodeliste i feilemelding.
+- **Blokkerer**: Kun kpi_jae-variabelen. Alle 10 øvrige variabler fungerer.
 
 ## Risikoer som har materialisert seg
 *(Ingen registrert ennå.)*
@@ -31,6 +35,21 @@ Levende status- og fremdriftsprotokoll. Oppdateres av prosjektleder (Claude Code
 ---
 
 ## Logg
+
+### 2026-04-27 – M4 fullført: Dashboard v1
+- `dashboard/index.html`, `dashboard/style.css`, `dashboard/app.js`: statisk Plotly-dashboard med
+  - Vifte-diagram (q10/q50/q90 ensemble-prognose) per variabel
+  - Modell-sammenligningsgraf (individuelle medialinjer)
+  - Ensemble-vekttabell med stolpediagram
+  - Modellspriktabell med flagg for høy uenighet
+  - Responsivt mobiloppsett
+- `.github/workflows/deploy_dashboard.yml`: GitHub Pages-deployment via `actions/deploy-pages`
+  - Kopierer `dashboard/` og `data/processed/forecasts/` til statisk site-rot
+  - Triggeres automatisk etter vellykket Data Pipeline-kjøring og ved push
+- **kpi_jae-fix**: `Konsumgrp: ["KPI-JAE"]` → `Konsumgrp: ["KPIJAE"]` (se Til avklaring)
+- 122/122 tester grønt
+- **Aktiveringsoppgave for prosjekteier**: Gå til GitHub → Settings → Pages → Source: GitHub Actions
+- **Neste**: M5 – QA, dokumentasjon, lansering
 
 ### 2026-04-27 – Orkestrering: modellkjørings-pipeline
 - `src/runner.py`: leser siste datavintagé → kjører alle modeller → ensemble → lagrer JSON til `data/processed/forecasts/<var>/latest.json`
@@ -120,7 +139,7 @@ Levende status- og fremdriftsprotokoll. Oppdateres av prosjektleder (Claude Code
 | M1 – Datapipeline | 🟢 Fullført | 2026-04-26 |
 | M2 – Modeller v1 | 🟢 Fullført | 2026-04-26 |
 | M3 – Kryssjekk og ensemble | 🟢 Fullført | 2026-04-27 |
-| M4 – Dashboard v1 | ⚪ Ikke startet | – |
+| M4 – Dashboard v1 | 🟢 Fullført | 2026-04-27 |
 | M5 – QA, dokumentasjon, lansering | ⚪ Ikke startet | – |
 | M6 – Drift og iterasjon | ⚪ Ikke startet | – |
 

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SMART – System for Model Analysis in Real Time</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.plot.ly/plotly-2.32.0.min.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <h1>SMART</h1>
+        <p class="tagline">System for Model Analysis in Real Time</p>
+      </div>
+      <div class="meta">
+        <span id="last-updated" class="last-updated">Laster...</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="disclaimer-bar" role="alert">
+    <strong>Merk:</strong> SMART er et eksperimentelt kryssjekkverktøy. Prognosene er ikke offisielle
+    og skal ikke brukes som grunnlag for investerings- eller policybeslutninger.
+  </div>
+
+  <div class="layout">
+
+    <nav class="sidebar" aria-label="Variabler">
+      <p class="sidebar-label">Variabler</p>
+      <ul id="variable-list" role="list"></ul>
+    </nav>
+
+    <main class="content" id="main-content">
+
+      <div id="loading-state" class="empty-state">
+        <p>Laster prognosedata&hellip;</p>
+      </div>
+
+      <div id="error-state" class="empty-state error" hidden>
+        <p id="error-message"></p>
+      </div>
+
+      <div id="variable-panel" hidden>
+
+        <section class="panel">
+          <div class="panel-header">
+            <h2 id="var-title"></h2>
+            <span id="var-unit" class="unit-badge"></span>
+          </div>
+          <p class="section-description">
+            Ensemble-prognose (medianlinje) med usikkerhetsintervall (10.–90. persentil).
+            Prognosen kombinerer flere modeller med prestasjonsvekting.
+          </p>
+          <div id="ensemble-chart" class="chart-container"></div>
+        </section>
+
+        <section class="panel">
+          <h3 class="panel-subheader">Modellenes individuelle prognoser</h3>
+          <p class="section-description">
+            Medianprognoser fra samtlige modeller – ulike kurver indikerer modellspriket.
+          </p>
+          <div id="model-chart" class="chart-container chart-sm"></div>
+        </section>
+
+        <div class="two-col">
+
+          <section class="panel">
+            <h3 class="panel-subheader">Modellvekter (ensemble)</h3>
+            <p class="section-description">
+              Vektene er inversely proportional til gjennomsnittlig RMSE i backtesting.
+            </p>
+            <table id="weights-table" class="data-table">
+              <thead><tr><th>Modell</th><th>Vekt</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </section>
+
+          <section class="panel">
+            <h3 class="panel-subheader">Modellsprik per horisontår</h3>
+            <p class="section-description">
+              Sprik = maks&minus;min mellom modellenes medianprognoser.
+              Høy uenighet markert med <span class="flag-badge">!</span>.
+            </p>
+            <table id="disagreement-table" class="data-table">
+              <thead>
+                <tr>
+                  <th>År</th>
+                  <th>Ensemble q50</th>
+                  <th>Sprik</th>
+                  <th>Std</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </section>
+
+        </div>
+
+      </div><!-- #variable-panel -->
+
+    </main>
+  </div><!-- .layout -->
+
+  <footer class="site-footer">
+    <p>
+      SMART er åpen kildekode (MIT-lisens). Data fra SSB (NLOD 2.0), Norges Bank (CC BY 4.0)
+      og FRED (ikke-kommersiell). Kildekode på
+      <a href="https://github.com/marhip97/smart" target="_blank" rel="noopener">GitHub</a>.
+    </p>
+  </footer>
+
+</body>
+</html>

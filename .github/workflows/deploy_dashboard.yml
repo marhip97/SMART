@@ -1,0 +1,74 @@
+name: Deploy dashboard to GitHub Pages
+
+on:
+  # Run after the data pipeline (which commits new forecasts to main)
+  workflow_run:
+    workflows: ["Data Pipeline"]
+    types: [completed]
+    branches: [main]
+
+  # Also deploy on push to main when dashboard files or forecasts change
+  push:
+    branches: [main]
+    paths:
+      - "dashboard/**"
+      - "data/processed/forecasts/**"
+
+  # Allow manual trigger
+  workflow_dispatch:
+
+# Grant GITHUB_TOKEN the permissions needed to deploy to Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one concurrent deployment; skip in-progress runs and let latest win
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    # Run on successful pipeline completion, or on direct push triggers
+    if: >
+      github.event_name == 'push' ||
+      github.event_name == 'workflow_dispatch' ||
+      github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Prepare site directory
+        run: |
+          mkdir -p _site/data/forecasts
+
+          # Copy dashboard front-end files
+          cp dashboard/index.html _site/index.html
+          cp dashboard/app.js     _site/app.js
+          cp dashboard/style.css  _site/style.css
+
+          # Copy forecast JSON files if they exist
+          if [ -d data/processed/forecasts ]; then
+            cp -r data/processed/forecasts/. _site/data/forecasts/
+            echo "Copied forecast data."
+          else
+            # Create a placeholder manifest so the dashboard shows a clear message
+            echo '{"run_date":"(ingen data ennå)","variables":[]}' \
+              > _site/data/forecasts/manifest.json
+            echo "No forecast data yet – placeholder manifest written."
+          fi
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
