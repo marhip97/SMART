@@ -96,6 +96,8 @@ def main() -> None:
     failed = {k: v for k, v in results.items() if v != "ok"}
     if failed:
         logger.error("Failed variables: %s", failed)
+    # Exit 1 only if NOTHING succeeded – a partial run should not block the model runner.
+    if not any(v == "ok" for v in results.values()):
         sys.exit(1)
 
 

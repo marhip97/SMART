@@ -53,9 +53,9 @@ variables:
     frequency: monthly
     transform: yoy_pct
     source_params:
-      table_id: "03013"
+      table_id: "05327"              # KPI-JA og KPI-JAE, etter konsumgruppe (SSB)
       filters:
-        Konsumgrp: ["KPIJAE"]         # Kode uten bindestrek (SSB-kode for KPI-JAE-aggregat)
+        Konsumgrp: ["TOTAL"]
         ContentsCode: ["Tolvmanedersendring"]
         Tid: ["*"]
 
