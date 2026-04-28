@@ -30,6 +30,7 @@ Utvikle SMART – et automatisert kryssjekkrammeverk og dashboard som genererer 
 - Minst 5 makrovariabler dekket i versjon 1 (forslag: BNP Fastlands-Norge, KPI, KPI-JAE, arbeidsledighet, styringsrente, Lønnsvekst, boligpriser).
 - Minst 3 modeller per variabel, med dokumentert backtesting.
 - Modulær arkitektur: ny variabel eller ny modell skal kunne legges til uten å bryte eksisterende kode.
+- **Ingen modell i v1 skal ha åpenbart misvisende prognoser:** alle q50-prognoser skal ligge innenfor [historisk_min − 2·std, historisk_max + 2·std] for den aktuelle variabelen.
 
 ### 2.4 Ikke-mål (avgrensning)
 - SMART skal **ikke** levere investeringsråd eller normative politikkanbefalinger.
@@ -120,7 +121,7 @@ Alle kilder må verifiseres mot lisens/bruksvilkår før produksjonssetting.
 | **M2** | Modeller v1 | 5 modeller implementert og backtestet (ARIMA, VAR, BVAR, DFM, AR-X, ML-baseline). | ✅ Fullført | 2026-04-26 |
 | **M3** | Kryssjekk og ensemble | Avviksmål, vekting, aggregert prognose med kvantiler 10/50/90. | ✅ Fullført | 2026-04-27 |
 | **M4** | Dashboard v1 | Publisert på GitHub Pages med automatisk ukentlig oppdatering. | ✅ Fullført | 2026-04-28 |
-| **M5** | QA, dokumentasjon, lansering | Tester, modellkort, brukerveiledning. Versjon 1.0. | 🔄 Pågår | Startet 2026-04-28 |
+| **M5** | QA, dokumentasjon, lansering | Tester, modellkort, brukerveiledning, metodisk kvalitetssikring (TILTAK.md). Versjon 1.0. | 🔄 Pågår | Startet 2026-04-28 |
 | **M6** | Drift og iterasjon | Løpende vedlikehold, utvidelser etter prioritet fra prosjekteier. | ⏳ Ikke startet | – |
 
 Tidsestimatet er veiledende. Prosjektleder skal varsle prosjekteier ved avvik fra planen.
@@ -131,7 +132,7 @@ Tidsestimatet er veiledende. Prosjektleder skal varsle prosjekteier ved avvik fr
 |---|---|---|---|---|
 | R1 | Datakilde endrer API eller blir utilgjengelig | Middels | Høy | Modulær datakildehåndtering, fallback-kilder, varsling i CI |
 | R2 | Modeller gir motstridende resultater uten klar tolkning | Høy | Middels | Eksplisitte avviksmål, dokumenterte modellantakelser, eskaler til prosjekteier ved store avvik |
-| R3 | Overfitting / dårlig out-of-sample-treff | Middels | Høy | Strikt walk-forward backtesting, holdout-perioder, dokumenterte metrikker |
+| R3 | Overfitting / dårlig out-of-sample-treff | Middels | Høy | Strikt walk-forward backtesting, holdout-perioder, dokumenterte metrikker. **Materialisert (2026-04-28):** ARIMA/AR-X eksploderer på korte serier, BVAR-fan for trang. Tiltak T1–T4 i `TILTAK.md` igangsatt. |
 | R4 | Datakvalitet (revisjoner, sesongjustering, brudd i serier) | Høy | Middels | Versjonering av rådata (vintage), eksplisitt håndtering av revisjoner |
 | R5 | Scope creep | Middels | Middels | Tydelige milepæler, kun prosjekteier kan utvide scope |
 | R6 | Teknisk gjeld i raskt utviklet kode | Middels | Middels | Krav til tester, modulær arkitektur, kodefagfellevurdering mellom agenter |

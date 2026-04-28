@@ -8,6 +8,7 @@ Levende status- og fremdriftsprotokoll. Oppdateres av prosjektleder (Claude Code
 
 ## Gjeldende fase
 **M5 – QA, dokumentasjon, lansering** (M4 fullført 2026-04-27)
+**v1-lansering utsatt** – metodegjennomgang avdekket P1-problemer som gir åpenbart misvisende prognoser. Lansering skjer etter at P1 og P2 er lukket.
 
 ## M0-beslutninger (vedtatt 2026-04-26)
 
@@ -26,11 +27,41 @@ Levende status- og fremdriftsprotokoll. Oppdateres av prosjektleder (Claude Code
 *(Ingen åpne avklaringer.)*
 
 ## Risikoer som har materialisert seg
-*(Ingen registrert ennå.)*
+
+- **R3 (overfitting/dårlig out-of-sample)** – materialisert. ARIMA eksploderer på korte serier (d=2), AR-X gir RMSE=1633 på boligprisvekst, BVAR-fan er 3–5x for trang. Tiltak igangsatt: se TILTAK.md T1–T4.
+- **R6 (teknisk gjeld)** – delvis materialisert. `copy.deepcopy` i walk_forward_eval er risikabelt for statsmodels-objekter. Tiltak: T8.
 
 ---
 
 ## Logg
+
+### 2026-04-28 – M5 metodegjennomgang: 12 funn, lansering utsatt
+
+Systematisk gjennomgang av modellkode og prognoseresultater avdekket fire kategorier funn. Detaljer og akseptansekriterier i `TILTAK.md`.
+
+**P1 – Stabilitetsproblemer (blokkerer lansering):**
+- T1: ARIMA velger d=2 på korte serier → divergerende prognoser (styringsrente 2029 = 41,9 %, lønnsvekst 2028 = 11,2 %)
+- T2: AR-X eksploderer i backtest-vindu 2007 for boligprisvekst (prediksjon = 7 672, RMSE = 1 633)
+- T3: Runner mangler min-obs-sjekk; lønnsvekst (9 obs) kjører BVAR/DFM/AR-X som gir flate vekter og støy-prognose
+
+**P2 – Feilkalibrerte usikkerhetsintervaller:**
+- T4: BVAR simulerer deterministisk (ingen ε), fan 3–5x for trang
+- T5: ML-baseline bruker tresprednig som kvantiler, ikke prediktive kvantiler
+- T6: AR-X mangler clipping i predict() for fremtidsprognoser
+
+**P3 – Pedagogisk klargjøring:**
+- T7: Disagreement-flagg treffer alle kombinasjoner (absolutt terskel 1,0 pp er for lav)
+- T8: `copy.deepcopy` i walk_forward_eval → bytt til parameterstyrt kloning
+- T9: BVAR-modellkort beskriver feil prior (random walk vs white noise)
+
+**P4 – Lanseringsklargjøring:**
+- T10: CHANGELOG.md mangler
+- T11: `model_health`-felt i forecast-JSON mangler
+- T12: Backtesting-disclaimer på dashboard er utilstrekkelig
+
+**Begrunnelse for utsatt lansering:** P1-funnene (T1–T3) gir synlig misvisende prognoser som kan feiloppfattes av brukere. v1.0 lanseres etter at branch P1 og P2 er merget og dashboardet er manuelt verifisert.
+
+**Til avklaring (T5):** Se eskaleringsnotat i `TILTAK.md` – valget mellom bladnode-kvantiler og `sklearn-quantile-forest`. Anbefaling: bladnode-kvantiler (ingen ny avhengighet).
 
 ### 2026-04-28 – M5 pågår: dashboard v2 – historikk, treffsikkerhet, boligprisvekst-fix
 - **boligprisvekst-fix**: rådata var indeksnivå (94–152); `_apply_transform()` i runner konverterer nå til YoY % før modellering. Prognoseversier oppdatert til ~2–10 % (korrekt størrelsesorden).
