@@ -166,7 +166,7 @@ class BVARModel(BaseModel):
 
         for d in range(self.n_draws):
             B_draw = draws[d].reshape(self._k, n, order="F")
-            all_forecasts[d] = _simulate_forward(Y_vals, B_draw, self.n_lags, steps)
+            all_forecasts[d] = _simulate_forward(Y_vals, B_draw, self.n_lags, steps, self._Sigma, rng)
 
         # Aggregate to annual growth rates and extract quantiles
         col_idx = self._col_idx
@@ -268,18 +268,28 @@ def _safe_inv(M: np.ndarray) -> np.ndarray:
 
 
 def _simulate_forward(
-    history: np.ndarray, B: np.ndarray, n_lags: int, steps: int
+    history: np.ndarray,
+    B: np.ndarray,
+    n_lags: int,
+    steps: int,
+    Sigma: np.ndarray | None = None,
+    rng: np.random.Generator | None = None,
 ) -> np.ndarray:
-    """Deterministic h-step-ahead forecast given coefficient matrix B.
+    """H-step-ahead simulation given coefficient matrix B.
 
     Args:
         history: (T × n) historical values.
         B:       (k × n) coefficient matrix (lagged vars + constant).
         n_lags:  Number of lags in the VAR.
         steps:   Number of steps to forecast.
+        Sigma:   (n × n) error covariance. When provided together with rng,
+                 innovations ε_t ~ N(0, Σ) are drawn at each step so that the
+                 resulting fan chart reflects both coefficient and innovation
+                 uncertainty.
+        rng:     Seeded random generator used for innovation draws.
 
     Returns:
-        (steps × n) array of point forecasts (no error term added).
+        (steps × n) array of simulated values.
     """
     n = history.shape[1]
     buf = list(history[-n_lags:])   # rolling window of last n_lags observations
@@ -288,6 +298,8 @@ def _simulate_forward(
     for t in range(steps):
         x = np.concatenate([buf[-(lag)] for lag in range(1, n_lags + 1)] + [np.ones(1)])
         y_hat = x @ B
+        if Sigma is not None and rng is not None:
+            y_hat = y_hat + rng.multivariate_normal(np.zeros(n), Sigma)
         forecasts[t] = y_hat
         buf.append(y_hat)
 

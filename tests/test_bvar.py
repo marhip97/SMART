@@ -191,3 +191,30 @@ class TestBVARModel:
         model.fit(y)
         result = model.predict()
         assert len(result.forecasts) == 2
+
+    def test_bvar_fan_widens_with_horizon(self):
+        """Innovation uncertainty should cause the fan to widen from year 1 to year 3."""
+        panel = _make_panel(n=30)
+        model = BVARModel("test_var", horizon_years=3, n_lags=1, n_draws=500, random_state=0)
+        model.fit(panel)
+        result = model.predict()
+        df = result.forecasts
+        spread = df["q90"] - df["q10"]
+        assert spread.iloc[2] > spread.iloc[0], (
+            f"Fan should widen: year-3 spread {spread.iloc[2]:.3f} <= year-1 spread {spread.iloc[0]:.3f}"
+        )
+
+    def test_bvar_innovation_variance_nonzero(self):
+        """_simulate_forward with Sigma should produce non-zero variance across paths."""
+        rng = np.random.default_rng(0)
+        history = np.random.default_rng(1).normal(size=(20, 2))
+        n_lags, steps, n = 1, 5, 2
+        k = n_lags * n + 1
+        B = np.zeros((k, n))
+        Sigma = np.eye(n) * 0.5
+
+        paths = np.stack([
+            _simulate_forward(history, B, n_lags, steps, Sigma, rng)
+            for _ in range(100)
+        ])
+        assert paths.std(axis=0).mean() > 0, "Innovation noise should produce non-zero cross-path variance"
