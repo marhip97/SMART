@@ -10,7 +10,7 @@ import pandas as pd
 from statsmodels.tsa.statespace.sarimax import SARIMAX
 
 from .base import BaseModel, EvaluationResult, ForecastResult
-from .utils import make_forecast_dates, walk_forward_eval
+from .utils import clip_forecast, make_forecast_dates, walk_forward_eval
 
 
 class ARXModel(BaseModel):
@@ -122,10 +122,13 @@ class ARXModel(BaseModel):
                 "q90": float(conf.iloc[sl, 1].mean()),
             })
 
+        # T2/T6: clip extreme forecasts to ±10σ from historical mean
+        forecasts = clip_forecast(pd.DataFrame(rows), self._y, n_std=10.0)
+
         return ForecastResult(
             variable_id=self.variable_id,
             model_id=self.model_id,
-            forecasts=pd.DataFrame(rows),
+            forecasts=forecasts,
             metadata={"ar_order": self._best_p, "n_exog": 0 if self._X_train is None else self._X_train.shape[1]},
         )
 

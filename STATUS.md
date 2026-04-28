@@ -35,6 +35,28 @@ Levende status- og fremdriftsprotokoll. Oppdateres av prosjektleder (Claude Code
 
 ## Logg
 
+### 2026-04-28 – Branch P1 ferdig: T1, T2, T3 implementert
+
+Alle akseptansekriterier i TILTAK.md T1–T3 møtt. Konkret resultat:
+
+| Kriterium | Før | Etter |
+|---|---|---|
+| Styringsrente 2029 q50 (ARIMA) | 41,9 % | 4,02 % |
+| Lønnsvekst 2028 fan q10–q90 | 3,4–8,8 (støy) | 2,1–8,2 (ARIMA) |
+| KPI ARIMA RMSE | 9,42 | 1,24 |
+| Boligprisvekst AR-X RMSE | 1 633 | 11,6 |
+| Lønnsvekst aktive modeller | 6 (alle n_obs=0) | 2 (ARIMA + VAR) |
+
+**T1** (`src/models/arima.py`): max_d hardkodet til 1, kort serie (n<15) bruker ARIMA(1,1,0) med trend="n", forhindrer drift fra konstant ledd ved differensiering. Alle q50 klippet til ±10·σ via ny `clip_forecast()` i `utils.py`.
+
+**T2/T6** (`src/models/arx.py`): AR-X bruker samme `clip_forecast()` på predict() og dermed også via walk_forward_eval. RMSE for boligprisvekst: 1 633 → 11,6.
+
+**T3** (`config/models.yaml`, `src/runner.py`): Hver modell har `min_obs`. Runner sjekker og hopper over modeller med utilstrekkelig data, logger til nytt `model_health`-felt i forecast-JSON. ARIMA min_obs=8 (kjører ARIMA(1,1,0) trygt), BVAR/DFM/AR-X=15, ML=20.
+
+128/128 tester grønt (122 + 6 nye for T1, T2, T3).
+
+**Neste:** Branch P2 (T4, T5, T6) – BVAR innovasjons-usikkerhet, ML-baseline kvantilfix.
+
 ### 2026-04-28 – M5 metodegjennomgang: 12 funn, lansering utsatt
 
 Systematisk gjennomgang av modellkode og prognoseresultater avdekket fire kategorier funn. Detaljer og akseptansekriterier i `TILTAK.md`.

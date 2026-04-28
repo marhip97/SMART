@@ -174,6 +174,34 @@ class TestRunVariable:
         result = run_variable("kpi", y, None, bad_cfg)
         assert result is None  # no models succeeded
 
+    def test_skip_model_insufficient_data(self):
+        """T3: models with min_obs > available obs must be excluded with reason."""
+        cfgs = [
+            {"id": "arima", "class": "ARIMAModel", "applies_to": "all",
+             "uses_exog": False, "min_obs": 5,
+             "params": {"max_p": 1, "max_q": 0, "max_d": 1}},
+            {"id": "bvar_demanding", "class": "BVARModel", "applies_to": "all",
+             "uses_exog": False, "min_obs": 50,    # impossible at n=8
+             "params": {"n_lags": 1, "lambda1": 0.2, "lambda2": 0.5, "n_draws": 50}},
+        ]
+        y = _annual_series("kpi", n=8)
+        result = run_variable("kpi", y, None, cfgs)
+        assert result is not None
+        assert "model_health" in result
+        assert "bvar_demanding" not in result["models"]
+        excluded_ids = [e["model"] for e in result["model_health"]["excluded"]]
+        assert "bvar_demanding" in excluded_ids
+        bvar_reason = next(e["reason"] for e in result["model_health"]["excluded"]
+                           if e["model"] == "bvar_demanding")
+        assert "insufficient_data" in bvar_reason
+
+    def test_model_health_lists_included_models(self):
+        y = _annual_series("kpi", n=20)
+        result = run_variable("kpi", y, None, MINIMAL_MODELS_CFG)
+        assert result["model_health"]["n_obs"] == 20
+        assert result["model_health"]["included"] == ["arima"]
+        assert result["model_health"]["excluded"] == []
+
 
 # ── save_results ───────────────────────────────────────────────────────────────
 
