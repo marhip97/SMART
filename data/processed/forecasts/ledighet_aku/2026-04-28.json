@@ -346,7 +346,7 @@
         {
           "date": "2003-01-01",
           "actual": 4.5,
-          "forecast": 4.1648
+          "forecast": 4.1649
         },
         {
           "date": "2004-01-01",
@@ -1464,7 +1464,7 @@
     },
     {
       "horizon_year": 2,
-      "spread": 0.6328,
+      "spread": 0.6329,
       "std": 0.2262,
       "ensemble_q50": 4.0297,
       "high_disagreement": true,
