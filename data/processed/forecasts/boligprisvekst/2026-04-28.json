@@ -88,51 +88,51 @@
     "forecasts": [
       {
         "date": "2026-01-01",
-        "q10": -1.6529,
-        "q50": 5.84,
+        "q10": -0.5961,
+        "q50": 5.708,
         "q90": 11.6351
       },
       {
         "date": "2027-01-01",
-        "q10": -2.1422,
-        "q50": 5.775,
+        "q10": -0.854,
+        "q50": 5.7114,
         "q90": 11.9681
       },
       {
         "date": "2028-01-01",
-        "q10": -3.0358,
-        "q50": 5.8578,
+        "q10": -1.4756,
+        "q50": 5.7125,
         "q90": 11.9825
       }
     ],
     "weights": {
-      "arx": 0.05,
-      "arima": 0.0529,
-      "bvar": 0.2342,
-      "var": 0.2094,
-      "dfm": 0.2358,
-      "ml_baseline": 0.2178
+      "arima": 0.1969,
+      "bvar": 0.1913,
+      "var": 0.171,
+      "dfm": 0.1925,
+      "arx": 0.0704,
+      "ml_baseline": 0.1779
     }
   },
   "models": {
     "arima": [
       {
         "date": "2026-01-01",
-        "q10": -2.0977,
-        "q50": 1.9205,
-        "q90": 5.9387
+        "q10": 0.0159,
+        "q50": 4.7088,
+        "q90": 9.4017
       },
       {
         "date": "2027-01-01",
-        "q10": -2.9166,
-        "q50": 1.5622,
-        "q90": 6.0409
+        "q10": -0.3401,
+        "q50": 4.8977,
+        "q90": 10.1355
       },
       {
         "date": "2028-01-01",
-        "q10": -4.4904,
-        "q50": 0.1543,
-        "q90": 4.7989
+        "q10": -1.37,
+        "q50": 4.2781,
+        "q90": 9.9262
       }
     ],
     "bvar": [
@@ -238,35 +238,35 @@
   },
   "evaluation": {
     "arima": {
-      "rmse": 18.8586,
-      "mae": 7.021,
-      "r2": -23.0637,
+      "rmse": 4.1346,
+      "mae": 2.9919,
+      "r2": -0.1566,
       "n_obs": 22,
       "backtest": [
         {
           "date": "2004-01-01",
           "actual": 10.2397,
-          "forecast": -75.9511
+          "forecast": 2.5089
         },
         {
           "date": "2005-01-01",
           "actual": 8.3004,
-          "forecast": 15.897
+          "forecast": 7.477
         },
         {
           "date": "2006-01-01",
           "actual": 13.6861,
-          "forecast": 15.5598
+          "forecast": 8.8751
         },
         {
           "date": "2007-01-01",
           "actual": 12.5201,
-          "forecast": 11.8822
+          "forecast": 12.0204
         },
         {
           "date": "2008-01-01",
           "actual": -0.9986,
-          "forecast": 9.3444
+          "forecast": 9.3445
         },
         {
           "date": "2009-01-01",
@@ -281,77 +281,77 @@
         {
           "date": "2011-01-01",
           "actual": 7.9739,
-          "forecast": 6.0777
+          "forecast": 9.5648
         },
         {
           "date": "2012-01-01",
           "actual": 6.7797,
-          "forecast": 4.7535
+          "forecast": 7.743
         },
         {
           "date": "2013-01-01",
           "actual": 4.0816,
-          "forecast": 3.8782
+          "forecast": 5.9141
         },
         {
           "date": "2014-01-01",
           "actual": 2.7233,
-          "forecast": 6.8259
+          "forecast": 6.8277
         },
         {
           "date": "2015-01-01",
           "actual": 6.0445,
-          "forecast": 4.2221
+          "forecast": 6.1391
         },
         {
           "date": "2016-01-01",
           "actual": 7.0,
-          "forecast": 3.4135
+          "forecast": 6.1504
         },
         {
           "date": "2017-01-01",
           "actual": 5.0467,
-          "forecast": 2.3474
+          "forecast": 5.6033
         },
         {
           "date": "2018-01-01",
           "actual": 1.4235,
-          "forecast": 2.0011
+          "forecast": 5.1202
         },
         {
           "date": "2019-01-01",
           "actual": 2.4561,
-          "forecast": 2.7236
+          "forecast": 4.3892
         },
         {
           "date": "2020-01-01",
           "actual": 4.2808,
-          "forecast": 2.8565
+          "forecast": 4.7352
         },
         {
           "date": "2021-01-01",
           "actual": 10.4269,
-          "forecast": 2.2077
+          "forecast": 4.4988
         },
         {
           "date": "2022-01-01",
           "actual": 5.2788,
-          "forecast": 1.1061
+          "forecast": 4.6304
         },
         {
           "date": "2023-01-01",
           "actual": -0.565,
-          "forecast": 1.0245
+          "forecast": 4.2804
         },
         {
           "date": "2024-01-01",
           "actual": 2.6989,
-          "forecast": 2.3158
+          "forecast": 4.5837
         },
         {
           "date": "2025-01-01",
           "actual": 5.4633,
-          "forecast": 2.5653
+          "forecast": 5.1829
         }
       ]
     },
@@ -710,9 +710,9 @@
       ]
     },
     "arx": {
-      "rmse": 1633.1974,
-      "mae": 352.874,
-      "r2": -180475.5602,
+      "rmse": 11.5602,
+      "mae": 6.7865,
+      "r2": -8.0422,
       "n_obs": 22,
       "backtest": [
         {
@@ -733,7 +733,7 @@
         {
           "date": "2007-01-01",
           "actual": 12.5201,
-          "forecast": 7672.8433
+          "forecast": 58.9196
         },
         {
           "date": "2008-01-01",
@@ -939,33 +939,45 @@
   "disagreement": [
     {
       "horizon_year": 1,
-      "spread": 4.5911,
-      "std": 1.7776,
-      "ensemble_q50": 4.9894,
+      "spread": 3.3224,
+      "std": 1.1778,
+      "ensemble_q50": 5.4541,
       "high_disagreement": true,
       "outlier_models": [
-        "arima"
+        "arx"
       ]
     },
     {
       "horizon_year": 2,
-      "spread": 5.0722,
-      "std": 1.8935,
-      "ensemble_q50": 4.9105,
+      "spread": 3.3148,
+      "std": 1.1866,
+      "ensemble_q50": 5.4664,
       "high_disagreement": true,
       "outlier_models": [
-        "arima"
+        "arx"
       ]
     },
     {
       "horizon_year": 3,
-      "spread": 6.481,
-      "std": 2.3885,
-      "ensemble_q50": 4.7728,
+      "spread": 3.499,
+      "std": 1.3109,
+      "ensemble_q50": 5.4601,
       "high_disagreement": true,
       "outlier_models": [
-        "arima"
+        "arx"
       ]
     }
-  ]
+  ],
+  "model_health": {
+    "n_obs": 33,
+    "included": [
+      "arima",
+      "bvar",
+      "var",
+      "dfm",
+      "arx",
+      "ml_baseline"
+    ],
+    "excluded": []
+  }
 }

@@ -142,20 +142,33 @@ def run_variable(
     eval_results: list[EvaluationResult] = []
     model_forecasts: dict[str, list[dict]] = {}
     model_evals: dict[str, EvaluationResult] = {}
+    excluded: list[dict] = []  # T3/T11: track skipped models for model_health
 
     for model_cfg in models_cfg:
+        model_id = model_cfg["id"]
         if not _applies_to(model_cfg, variable_id):
             continue
 
         model_cls = _MODEL_REGISTRY.get(model_cfg["class"])
         if model_cls is None:
             logger.warning("Unknown model class '%s' – skipping.", model_cfg["class"])
+            excluded.append({"model": model_id, "reason": "unknown_class"})
+            continue
+
+        # T3: skip models that need more observations than we have.
+        min_obs = int(model_cfg.get("min_obs", 10))
+        if len(y) < min_obs:
+            logger.info("  – %s / %s: skipped (need %d obs, have %d)",
+                        variable_id, model_id, min_obs, len(y))
+            excluded.append({
+                "model": model_id,
+                "reason": f"insufficient_data ({len(y)} < {min_obs})",
+            })
             continue
 
         params = {k: v for k, v in model_cfg.get("params", {}).items()}
         uses_exog = model_cfg.get("uses_exog", False)
         X_fit = X if uses_exog else None
-        model_id = model_cfg["id"]
 
         try:
             model = model_cls(variable_id=variable_id, **params)
@@ -169,6 +182,7 @@ def run_variable(
             logger.info("  ✓ %s / %s", variable_id, model_id)
         except Exception as exc:
             logger.warning("  ✗ %s / %s: %s", variable_id, model_id, exc)
+            excluded.append({"model": model_id, "reason": f"fit_error: {exc}"})
 
     if not forecast_results:
         logger.warning("%s: no models produced a forecast.", variable_id)
@@ -221,6 +235,11 @@ def run_variable(
         "models": model_forecasts,
         "evaluation": evaluation,
         "disagreement": disagreement,
+        "model_health": {
+            "n_obs": len(y),
+            "included": list(model_forecasts.keys()),
+            "excluded": excluded,
+        },
     }
 
 

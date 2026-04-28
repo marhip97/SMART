@@ -11,7 +11,7 @@ from statsmodels.tsa.statespace.sarimax import SARIMAX
 from statsmodels.tsa.stattools import adfuller
 
 from .base import BaseModel, EvaluationResult, ForecastResult
-from .utils import make_forecast_dates, walk_forward_eval
+from .utils import clip_forecast, make_forecast_dates, walk_forward_eval
 
 
 class ARIMAModel(BaseModel):
@@ -24,6 +24,10 @@ class ARIMAModel(BaseModel):
 
     model_id = "arima"
 
+    # Minimum annual observations before we trust ADF/AIC selection.
+    # Below this, fall back to a fixed conservative order.
+    SHORT_SERIES_THRESHOLD: int = 15
+
     def __init__(
         self,
         variable_id: str,
@@ -32,14 +36,15 @@ class ARIMAModel(BaseModel):
         random_state: int = 42,
         max_p: int = 4,
         max_q: int = 2,
-        max_d: int = 2,
+        max_d: int = 1,        # T1: cap d at 1; d=2 + trend="c" → divergent forecasts
         information_criterion: str = "aic",
         **kwargs: Any,
     ) -> None:
         super().__init__(variable_id, horizon_years, quantiles, random_state)
         self.max_p = max_p
         self.max_q = max_q
-        self.max_d = max_d
+        # Hard cap at 1 even if config passes a higher value
+        self.max_d = min(max_d, 1)
         self.information_criterion = information_criterion
         self._result: Any = None
         self._y: pd.Series | None = None
@@ -47,7 +52,25 @@ class ARIMAModel(BaseModel):
     def fit(self, y: pd.Series, X: pd.DataFrame | None = None) -> "ARIMAModel":
         """Fit ARIMA with order selection by AIC grid search."""
         self._y = y.dropna()
+
+        # T1: short-series guard – skip selection, use conservative ARIMA(1,1,0).
+        if len(self._y) < self.SHORT_SERIES_THRESHOLD:
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore")
+                mod = SARIMAX(
+                    self._y,
+                    order=(1, 1, 0),
+                    trend="n",   # no constant on differenced series → avoids drift
+                    enforce_stationarity=False,
+                    enforce_invertibility=False,
+                )
+                self._result = mod.fit(disp=False)
+            self._is_fitted = True
+            return self
+
         d = self._select_d()
+        # Use trend="n" when differencing to avoid linear/quadratic drift.
+        trend = "c" if d == 0 else "n"
         best_model, best_ic = None, np.inf
 
         for p in range(0, self.max_p + 1):
@@ -58,7 +81,7 @@ class ARIMAModel(BaseModel):
                         mod = SARIMAX(
                             self._y,
                             order=(p, d, q),
-                            trend="c",
+                            trend=trend,
                             enforce_stationarity=False,
                             enforce_invertibility=False,
                         )
@@ -100,7 +123,7 @@ class ARIMAModel(BaseModel):
             forecast_date = make_forecast_dates(self._y.index[-1], yr)
             rows.append({"date": forecast_date, "q10": q10, "q50": q50, "q90": q90})
 
-        forecasts = pd.DataFrame(rows)
+        forecasts = clip_forecast(pd.DataFrame(rows), self._y, n_std=10.0)
         return ForecastResult(
             variable_id=self.variable_id,
             model_id=self.model_id,

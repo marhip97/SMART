@@ -27,6 +27,40 @@ def resample_to_annual(y: pd.Series) -> pd.Series:
     return y.resample("YS").mean()
 
 
+def clip_forecast(
+    forecasts: pd.DataFrame,
+    y_train: pd.Series,
+    n_std: float = 10.0,
+) -> pd.DataFrame:
+    """Clip forecast quantiles to a sane band around the historical mean.
+
+    Guards against numerical blow-ups in models that occasionally diverge
+    (e.g. SARIMAX with awkward fitting windows). The band is wide enough
+    to preserve real shocks but cuts off prediction values like 7672.
+
+    Args:
+        forecasts:  DataFrame with columns ['date', 'q10', 'q50', 'q90'].
+        y_train:    Historical training series (annual or higher freq).
+        n_std:      Half-width of the band, in historical std deviations.
+
+    Returns:
+        Same DataFrame with q10/q50/q90 clipped to [μ − n_std·σ, μ + n_std·σ].
+    """
+    y_clean = y_train.dropna()
+    if len(y_clean) < 2:
+        return forecasts
+    mu = float(y_clean.mean())
+    sigma = float(y_clean.std(ddof=1))
+    if sigma == 0 or not np.isfinite(sigma):
+        return forecasts
+    lo, hi = mu - n_std * sigma, mu + n_std * sigma
+    out = forecasts.copy()
+    for col in ("q10", "q50", "q90"):
+        if col in out.columns:
+            out[col] = out[col].clip(lower=lo, upper=hi)
+    return out
+
+
 def build_lag_features(
     y: pd.Series,
     X: pd.DataFrame | None,

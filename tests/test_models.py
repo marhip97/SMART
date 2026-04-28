@@ -106,6 +106,39 @@ class TestARIMAModel:
         result = model.evaluate(y, min_train_years=10)
         _assert_eval_result(result, "test_var")
 
+    def test_d_is_capped_at_one(self):
+        """T1: max_d > 1 must be silently capped to 1 to avoid divergent forecasts."""
+        model = ARIMAModel("test_var", max_d=3)
+        assert model.max_d == 1
+
+    def test_short_series_uses_safe_fallback(self):
+        """T1: series shorter than SHORT_SERIES_THRESHOLD uses ARIMA(1,1,0) trend='n'."""
+        y = _make_annual_series(n=10)
+        model = ARIMAModel("test_var", horizon_years=3)
+        model.fit(y)
+        assert model._result.model.order == (1, 1, 0)
+
+    def test_no_explosive_forecast_short_series(self):
+        """T1: short, unstable series must not produce divergent forecasts.
+
+        Reproduces the styringsrente/lønnsvekst failure mode (n=9–11 obs).
+        """
+        # Trending series that previously caused d=2 to be selected
+        idx = pd.date_range("2017-01-01", periods=9, freq="YS")
+        y = pd.Series([0.5, 0.5, 0.75, 1.0, 1.5, 4.5, 4.25, 3.75, 3.5], index=idx)
+        model = ARIMAModel("styringsrente", horizon_years=3, max_d=2)  # config asks for 2
+        model.fit(y)
+        result = model.predict()
+
+        hist_max  = float(y.max())
+        hist_std  = float(y.std(ddof=1))
+        ceiling   = hist_max + 3 * hist_std
+        assert (result.forecasts["q50"] <= ceiling).all(), \
+            f"q50 above {ceiling:.1f}: {result.forecasts['q50'].tolist()}"
+        # Specifically: must not predict 41.9 % (real-world failure mode)
+        assert (result.forecasts["q50"] < 15).all(), \
+            f"q50 unrealistically high: {result.forecasts['q50'].tolist()}"
+
 
 # ── VAR ────────────────────────────────────────────────────────────────────────
 
@@ -196,6 +229,24 @@ class TestARXModel:
         model = ARXModel("test_var", horizon_years=1, max_lags=2)
         result = model.evaluate(y, min_train_years=10)
         _assert_eval_result(result, "test_var")
+
+    def test_clip_extreme_predictions(self):
+        """T2/T6: predictions must be clipped to ±10σ from historical mean."""
+        y = _make_annual_series(n=20)  # μ ≈ 2, σ ≈ 1
+        X = _make_exog(y)
+        model = ARXModel("test_var", horizon_years=3, max_lags=2)
+        model.fit(y, X)
+        result = model.predict()
+
+        mu = float(y.mean())
+        sigma = float(y.std(ddof=1))
+        upper = mu + 10 * sigma
+        lower = mu - 10 * sigma
+        assert (result.forecasts["q50"] <= upper).all(), \
+            f"q50 above clip ceiling {upper:.1f}: {result.forecasts['q50'].tolist()}"
+        assert (result.forecasts["q50"] >= lower).all()
+        # Must not produce values like 7672 (real-world boligprisvekst failure)
+        assert (result.forecasts["q90"].abs() < 100).all()
 
 
 # ── ML Baseline ────────────────────────────────────────────────────────────────
