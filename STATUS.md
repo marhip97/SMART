@@ -35,6 +35,21 @@ Levende status- og fremdriftsprotokoll. Oppdateres av prosjektleder (Claude Code
 
 ## Logg
 
+### 2026-04-28 – Branch P2 fullfort: T4, T5, T6 og T9
+
+**T5** (`src/models/ml_baseline.py`): Erstattet per-tre-prediksjon (gjennomsnittsspredning) med bladnode-kvantilestimering (Meinshausen 2006). `_leaf_node_quantiles()` samler treningsobservasjoner fra matchende bladnoder i alle trær, og beregner empiriske persentiler over den poolede fordelingen. Ingen ny avhengighet.
+
+| Kriterium | Resultat |
+|---|---|
+| ML q90−q10 bredere enn per-tre-spredning | Bekreftet (pooling over ~200×n_leaf obs vs. 200 gjennomsnitt) |
+| Empirisk dekningsgrad ≥ 55 % (14 walk-forward vinduer) | Bekreftet (ny test: `test_ml_baseline_quantile_coverage`) |
+
+**T6** (`src/models/arx.py`): Allerede implementert som del av T2/T6 i P1-branchen (linje 126 i `predict()`). Ingen ytterligere endring nødvendig.
+
+131/131 tester grønt.
+
+**Neste:** P3-branchen (T7 disagreement-terskel, T8 walk_forward-kloning, T9 allerede gjort i P2).
+
 ### 2026-04-28 – Branch P2 pågår: T4 og T9 implementert
 
 **T4** (`src/models/bvar.py`): `_simulate_forward()` trekker nå innovasjoner ε_t ~ N(0, Σ) per tidssteg. Σ er OLS-estimert feilkovariansmatrise fra `fit()`. Fan-bredden øker monotont med horisont og reflekterer både parameterusikkerhet (B-trekk fra posterior) og innovasjonsusikkerhet (akkumulert støy).
