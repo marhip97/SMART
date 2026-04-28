@@ -35,6 +35,20 @@ Levende status- og fremdriftsprotokoll. Oppdateres av prosjektleder (Claude Code
 
 ## Logg
 
+### 2026-04-28 – Branch P2 pågår: T4 og T9 implementert
+
+**T4** (`src/models/bvar.py`): `_simulate_forward()` trekker nå innovasjoner ε_t ~ N(0, Σ) per tidssteg. Σ er OLS-estimert feilkovariansmatrise fra `fit()`. Fan-bredden øker monotont med horisont og reflekterer både parameterusikkerhet (B-trekk fra posterior) og innovasjonsusikkerhet (akkumulert støy).
+
+| Kriterium | Resultat |
+|---|---|
+| BVAR q90−q10 øker med horisont | Bekreftet (ny test: `test_bvar_fan_widens_with_horizon`) |
+| std(simulerte baner) > 0 | Bekreftet (ny test: `test_bvar_innovation_variance_nonzero`) |
+| Alle eksisterende tester grønt | 130/130 |
+
+**T9** (`docs/models/bvar.md`): Modellkortet er oppdatert med korrekt prior-gjennomsnitt (null, ikke random walk), og kvantilbeskrivelsen dokumenterer nå begge usikkerhetskildene.
+
+**Neste i P2-branchen:** T5 (ML-baseline kvantilfix) og T6 (AR-X predict()-clipping – allerede implementert som del av T2/T6 i P1).
+
 ### 2026-04-28 – Branch P1 ferdig: T1, T2, T3 implementert
 
 Alle akseptansekriterier i TILTAK.md T1–T3 møtt. Konkret resultat:

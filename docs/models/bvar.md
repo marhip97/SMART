@@ -31,9 +31,13 @@ Prior-varians for koeffisient på variabel *j* ved lag *l* i ligning *i*:
 
 Egne lags er løsere regulert (større varians) – modellen kan lære mye fra egne historiske verdier. Krysslags er strammere regulert – lite informasjon antas å ligge i andres historikk med standard-verdier.
 
+## Prior-gjennomsnitt
+
+Prior-gjennomsnittet er **null (hvit støy)** for alle koeffisienter. Dette er en mer nøytral regularisering enn «random walk»-prioret (prior-gjennomsnitt = 1 for eget-lag-koeffisienten), og er passende for variabler uttrykt som veksttakter der vi ikke forventer at nivået følger en tilfeldig gang.
+
 ## Antakelser
 
-- Prior-strukturen (Minnesota) er rimelig for makroøkonomiske tidsserier.
+- Prior-strukturen (Minnesota) er rimelig for makroøkonomiske tidsserier uttrykt som veksttakter.
 - Σ er konstant over tid (homoskedasitet).
 - Posterior er normalfordelt betinget på OLS Σ (ikke full Gibbs over Σ).
 - Variabler er stasjonære eller nær-stasjonære.
@@ -46,7 +50,12 @@ Egne lags er løsere regulert (større varians) – modellen kan lære mye fra e
 
 ## Kvantilberegning
 
-`n_draws` trekk av koeffisientmatrisen B fra posterior N(b_post, V_post). For hvert trekk simuleres deterministisk h-steg-fremover. 10., 50. og 90. persentil av de resulterende prognosene gir fan-chart-kvantilene. Deterministisk simulering (uten å legge til feilledd) undervurderer usikkerheten noe; dette er en bevisst forenkling for å holde `n_draws` lavt og kjøretiden akseptabel.
+`n_draws` trekk av koeffisientmatrisen B fra posterior N(b_post, V_post). For hvert trekk simuleres h-steg-fremover med innovasjoner ε_t ~ N(0, Σ) trukket per tidssteg fra den OLS-estimerte feilkovariansmatrisen. Kvantilene reflekterer dermed **to usikkerhetskilder** summert:
+
+1. **Parameterusikkerhet:** spredningen i B-trekkene fra posterior.
+2. **Innovasjonsusikkerhet:** akkumulert støy fra ε_t ved hvert fremtidssteg.
+
+Innovasjonsusikkerheten dominerer over lang horisont og sikrer at fan-chart-bredden øker monotont med horisonten. 10., 50. og 90. persentil beregnes over de `n_draws` simulerte banene.
 
 ## Fordeler fremfor standard VAR
 
