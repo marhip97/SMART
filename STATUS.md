@@ -32,6 +32,13 @@ Levende status- og fremdriftsprotokoll. Oppdateres av prosjektleder (Claude Code
 
 ## Logg
 
+### 2026-04-28 – PR #10 merget til main: full CI/CD-kjede aktiv
+- PR #10 merget. Main inneholder nå hele prosjektet (94 filer, 8 936 linjer).
+- Datavintagé (12/12 variabler) og prognoseresultater (7/7 målvariabler) er committet til repo.
+- Push til main trigget `deploy_dashboard.yml` → dashboard deployes til GitHub Pages.
+- Ukentlig pipeline (mandag 06:00 UTC) er aktiv og vil oppdatere data + prognoser automatisk.
+- **Neste M5-oppgaver**: verifiser dashboardets innhold i nettleser, gjennomgå backtesting-resultater, oppdater `docs/variables/kpi_jae.md` med riktig tabell-ID (05327).
+
 ### 2026-04-28 – .gitignore-fix: pipeline kan nå committe datavintagé
 - Fjernet `data/raw/`, `data/processed/` og `*.parquet` fra `.gitignore` –
   disse blokkerte `git add data/raw/` i CI og hindret vintagelagring.
