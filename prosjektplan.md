@@ -75,7 +75,7 @@ Prosjektleder oppdaterer `STATUS.md` ved:
 ### 4.1 Teknologivalg (foreslått, til godkjenning)
 - **Språk:** Python 3.11+ (modeller, pipeline). JavaScript/HTML/CSS for dashboard.
 - **Modellbibliotek:** `statsmodels`, `scikit-learn`, `arch`, evt. `pymc` eller `darts` for utvidelser.
-- **Data:** `pandas`, `pyjstat` (SSB), `requests`. Lagring som Parquet/CSV i `/data`.
+- **Data:** `pandas`, `requests`. SSB JSON-stat2 parses innebygd (uten pyjstat). Lagring som Parquet i `/data`.
 - **Dashboard:** Statisk side (HTML + Plotly/Chart.js) som bygges av GitHub Actions og publiseres til GitHub Pages.
 - **Automasjon:** GitHub Actions (cron + push-trigger).
 - **Dokumentasjon:** Markdown i `/docs`. Modellkort per modell.
@@ -105,25 +105,23 @@ Prosjektleder oppdaterer `STATUS.md` ved:
 ```
 
 ### 4.3 Datakilder (foreløpig liste – verifiseres i fase 1)
-- **SSB** (Statistikkbanken API): KPI, BNP, arbeidsmarked, lønnsstatistikk.
-- **Norges Bank**: Styringsrente, valutakurser, pengemengde.
-- **Eurostat**: Sammenliknbar EU-data.
-- **FRED** (St. Louis Fed): Internasjonale variabler (oljepris, US-rente, dollarindeks).
-- **NAV**: Registrert ledighet (supplerende til SSB AKU).
+- **SSB** (Statistikkbanken API, JSON-stat2): BNP Fastlands-Norge, KPI, KPI-JAE, AKU-ledighet, lønnsvekst, boligprisvekst, K2-kredittvekst.
+- **Norges Bank** (SDMX-JSON): Styringsrente, EUR/NOK.
+- **FRED** (St. Louis Fed, CSV): Oljepris (Brent), ECB-rente, handelspartnervekst (euro-område BNP).
 
 Alle kilder må verifiseres mot lisens/bruksvilkår før produksjonssetting.
 
 ## 5. Faser og milepæler
 
-| # | Fase | Leveranse | Estimert varighet |
-|---|---|---|---|
-| **M0** | Oppstart og avklaring | Prosjektplan godkjent. Variabel- og modellutvalg avklart med prosjekteier. | Uke 1 |
-| **M1** | Datapipeline | Automatisert henting av minst 5 variabler, validering, lagring. | Uke 2–3 |
-| **M2** | Modeller v1 | Minst 3 modeller per variabel implementert og backtestet. | Uke 4–6 |
-| **M3** | Kryssjekk og ensemble | Avviksmål, vekting, aggregert prognose. | Uke 7 |
-| **M4** | Dashboard v1 | Publisert på GitHub Pages med automatisk oppdatering. | Uke 8–9 |
-| **M5** | QA, dokumentasjon, lansering | Tester, modellkort, brukerveiledning. Versjon 1.0. | Uke 10 |
-| **M6** | Drift og iterasjon | Løpende vedlikehold, utvidelser etter prioritet fra prosjekteier. | Kontinuerlig |
+| # | Fase | Leveranse | Status | Fullført |
+|---|---|---|---|---|
+| **M0** | Oppstart og avklaring | Prosjektplan godkjent. Variabel- og modellutvalg avklart med prosjekteier. | ✅ Fullført | 2026-04-26 |
+| **M1** | Datapipeline | Automatisert henting av alle 12 variabler, validering, lagring. | ✅ Fullført | 2026-04-26 |
+| **M2** | Modeller v1 | 5 modeller implementert og backtestet (ARIMA, VAR, BVAR, DFM, AR-X, ML-baseline). | ✅ Fullført | 2026-04-26 |
+| **M3** | Kryssjekk og ensemble | Avviksmål, vekting, aggregert prognose med kvantiler 10/50/90. | ✅ Fullført | 2026-04-27 |
+| **M4** | Dashboard v1 | Publisert på GitHub Pages med automatisk ukentlig oppdatering. | ✅ Fullført | 2026-04-28 |
+| **M5** | QA, dokumentasjon, lansering | Tester, modellkort, brukerveiledning. Versjon 1.0. | 🔄 Pågår | – |
+| **M6** | Drift og iterasjon | Løpende vedlikehold, utvidelser etter prioritet fra prosjekteier. | ⏳ Ikke startet | – |
 
 Tidsestimatet er veiledende. Prosjektleder skal varsle prosjekteier ved avvik fra planen.
 

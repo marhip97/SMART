@@ -4,6 +4,8 @@ Et automatisert kryssjekkrammeverk for prognoser på sentrale norske makroøkono
 
 > **Disclaimer:** SMART er et eksperimentelt kryssjekkverktøy. Prognosene er ikke offisielle og skal ikke brukes som grunnlag for investerings- eller policybeslutninger.
 
+**Dashboard:** https://marhip97.github.io/SMART/
+
 ---
 
 ## Hva er SMART?
@@ -11,12 +13,14 @@ Et automatisert kryssjekkrammeverk for prognoser på sentrale norske makroøkono
 SMART kjører flere modeller med ulike forutsetninger parallelt på samme variabler. Avvik mellom modellene er et signal i seg selv – og gir brukeren et bilde av hvor robust en prognose er.
 
 **Målvariabler (v1):**
-- BNP-vekst Fastlands-Norge
-- KPI og KPI-JAE
-- Registrert ledighet (NAV)
-- Styringsrenten
-- Lønnsvekst
-- Boligprisvekst
+- BNP-vekst Fastlands-Norge (SSB)
+- KPI og KPI-JAE (SSB)
+- AKU-arbeidsledighet (SSB, 15–74 år)
+- Styringsrenten (Norges Bank)
+- Lønnsvekst (SSB)
+- Boligprisvekst (SSB)
+
+**Betingingsvariabler:** Oljepris (FRED), EUR/NOK (Norges Bank), handelspartnervekst (FRED), ECB-rente (FRED), K2-kredittvekst (SSB)
 
 **Modeller (v1):** ARIMA, VAR/BVAR, Dynamic Factor Model, AR-X, ML-baseline
 
@@ -27,17 +31,18 @@ SMART kjører flere modeller med ulike forutsetninger parallelt på samme variab
 ## Repo-struktur
 
 ```
-config/          Variabelkonfigurasjon (variables.yaml)
+config/          Variabel- og modellkonfigurasjon (variables.yaml, models.yaml)
 src/data/        Datapipeline (hentere, validering, lagring)
 src/models/      Modellimplementasjoner
 src/evaluation/  Backtesting og metrikker
 src/ensemble/    Kryssjekk og aggregering
-data/raw/        Rådata med vintage-tidsstempler (ikke versjonskontrollert)
-data/processed/  Prosessert, modell-klar data (ikke versjonskontrollert)
+src/runner.py    Orkestrerer modellkjøring og produserer prognose-JSON
+data/raw/        Rådata med vintage-tidsstempler (parquet, versjonskontrollert)
+data/processed/  Prognoseresultater og manifest (JSON, versjonskontrollert)
 tests/           Enhetstester og integrasjonstester
 docs/            Modellkort og variabelbeskrivelser
-dashboard/       GitHub Pages-frontend
-notebooks/       Utforskning og EDA
+dashboard/       GitHub Pages-frontend (Plotly.js, statisk HTML/CSS/JS)
+scripts/         Hjelpeskript (f.eks. API-oppdagelse)
 ```
 
 ---
@@ -47,8 +52,10 @@ notebooks/       Utforskning og EDA
 ```bash
 pip install -r requirements-dev.txt
 pytest tests/
+
 python -m src.data.pipeline          # Hent alle variabler
 python -m src.data.pipeline kpi bnp_fastland  # Hent spesifikke variabler
+python -m src.runner                  # Kjør modeller og generer prognose-JSON
 ```
 
 ### Legge til en ny variabel
@@ -57,10 +64,17 @@ python -m src.data.pipeline kpi bnp_fastland  # Hent spesifikke variabler
 2. Hvis kilden ikke finnes fra før, implementer en ny `DataSource`-subklasse i `src/data/` og registrer den i `_SOURCE_REGISTRY` i `pipeline.py`.
 3. Kjør testene: `pytest tests/`
 
+### Oppdatering av prognosedata
+
+GitHub Actions kjører automatisk hver mandag kl. 06:00 UTC:
+1. **fetch-data** – henter nye datapunkter fra alle 12 variabler og committer vintager til `data/raw/`
+2. **run-models** – kjører alle modeller og ensemble, lagrer prognose-JSON til `data/processed/forecasts/`
+3. **deploy_dashboard** – deployer oppdatert dashboard til GitHub Pages
+
 ---
 
 ## Lisens
 
 MIT License – se LICENSE-fil.
 
-Kilde for data: SSB (NLOD 2.0), NAV (NLOD 2.0), Norges Bank (CC BY 4.0), FRED/Federal Reserve Bank of St. Louis.
+Datakilder: SSB (NLOD 2.0), Norges Bank (CC BY 4.0), FRED/Federal Reserve Bank of St. Louis (ikke-kommersiell bruk).

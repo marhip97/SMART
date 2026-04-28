@@ -151,7 +151,7 @@ Levende status- og fremdriftsprotokoll. Oppdateres av prosjektleder (Claude Code
 | M2 – Modeller v1 | 🟢 Fullført | 2026-04-26 |
 | M3 – Kryssjekk og ensemble | 🟢 Fullført | 2026-04-27 |
 | M4 – Dashboard v1 | 🟢 Fullført | 2026-04-27 |
-| M5 – QA, dokumentasjon, lansering | 🟡 Pågår | – |
+| M5 – QA, dokumentasjon, lansering | 🟡 Pågår | Startet 2026-04-28 |
 | M6 – Drift og iterasjon | ⚪ Ikke startet | – |
 
 **Statuslegende:** 🟢 Fullført · 🟡 Pågår · 🔴 Blokkert · ⚪ Ikke startet
