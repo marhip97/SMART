@@ -89,27 +89,27 @@
       {
         "date": "2026-01-01",
         "q10": -0.5961,
-        "q50": 5.708,
+        "q50": 5.7153,
         "q90": 11.6351
       },
       {
         "date": "2027-01-01",
         "q10": -0.854,
-        "q50": 5.7114,
+        "q50": 5.6887,
         "q90": 11.9681
       },
       {
         "date": "2028-01-01",
         "q10": -1.4756,
-        "q50": 5.7125,
+        "q50": 5.6934,
         "q90": 11.9825
       }
     ],
     "weights": {
       "arima": 0.1969,
-      "bvar": 0.1912,
-      "var": 0.171,
-      "dfm": 0.1925,
+      "bvar": 0.1911,
+      "var": 0.1711,
+      "dfm": 0.1926,
       "arx": 0.0704,
       "ml_baseline": 0.1779
     }
@@ -138,21 +138,21 @@
     "bvar": [
       {
         "date": "2026-01-01",
-        "q10": 5.2512,
-        "q50": 6.4659,
-        "q90": 7.5483
+        "q10": 3.2296,
+        "q50": 6.5047,
+        "q90": 9.9708
       },
       {
         "date": "2027-01-01",
-        "q10": 5.2181,
-        "q50": 6.5328,
-        "q90": 7.6322
+        "q10": 3.0406,
+        "q50": 6.4144,
+        "q90": 9.7642
       },
       {
         "date": "2028-01-01",
-        "q10": 5.2176,
-        "q50": 6.5331,
-        "q90": 7.6314
+        "q10": 2.9132,
+        "q50": 6.4343,
+        "q90": 9.5295
       }
     ],
     "var": [
@@ -356,120 +356,120 @@
       ]
     },
     "bvar": {
-      "rmse": 4.2566,
-      "mae": 3.3544,
-      "r2": -0.2259,
+      "rmse": 4.2596,
+      "mae": 3.3622,
+      "r2": -0.2277,
       "n_obs": 22,
       "backtest": [
         {
           "date": "2004-01-01",
           "actual": 10.2397,
-          "forecast": 8.5488
+          "forecast": 8.5194
         },
         {
           "date": "2005-01-01",
           "actual": 8.3004,
-          "forecast": 8.9351
+          "forecast": 8.8393
         },
         {
           "date": "2006-01-01",
           "actual": 13.6861,
-          "forecast": 8.8884
+          "forecast": 8.7721
         },
         {
           "date": "2007-01-01",
           "actual": 12.5201,
-          "forecast": 9.3794
+          "forecast": 9.3319
         },
         {
           "date": "2008-01-01",
           "actual": -0.9986,
-          "forecast": 9.6799
+          "forecast": 9.6099
         },
         {
           "date": "2009-01-01",
           "actual": 1.8732,
-          "forecast": 8.7289
+          "forecast": 8.7559
         },
         {
           "date": "2010-01-01",
           "actual": 8.2037,
-          "forecast": 8.1649
+          "forecast": 8.0557
         },
         {
           "date": "2011-01-01",
           "actual": 7.9739,
-          "forecast": 8.3127
+          "forecast": 8.284
         },
         {
           "date": "2012-01-01",
           "actual": 6.7797,
-          "forecast": 8.2852
+          "forecast": 8.2121
         },
         {
           "date": "2013-01-01",
           "actual": 4.0816,
-          "forecast": 8.1706
+          "forecast": 8.13
         },
         {
           "date": "2014-01-01",
           "actual": 2.7233,
-          "forecast": 7.8325
+          "forecast": 7.8705
         },
         {
           "date": "2015-01-01",
           "actual": 6.0445,
-          "forecast": 7.4899
+          "forecast": 7.5186
         },
         {
           "date": "2016-01-01",
           "actual": 7.0,
-          "forecast": 7.5495
+          "forecast": 7.6056
         },
         {
           "date": "2017-01-01",
           "actual": 5.0467,
-          "forecast": 7.5858
+          "forecast": 7.6014
         },
         {
           "date": "2018-01-01",
           "actual": 1.4235,
-          "forecast": 7.363
+          "forecast": 7.3897
         },
         {
           "date": "2019-01-01",
           "actual": 2.4561,
-          "forecast": 6.8961
+          "forecast": 6.9347
         },
         {
           "date": "2020-01-01",
           "actual": 4.2808,
-          "forecast": 6.7065
+          "forecast": 6.745
         },
         {
           "date": "2021-01-01",
           "actual": 10.4269,
-          "forecast": 6.6688
+          "forecast": 6.7279
         },
         {
           "date": "2022-01-01",
           "actual": 5.2788,
-          "forecast": 7.2547
+          "forecast": 7.2727
         },
         {
           "date": "2023-01-01",
           "actual": -0.565,
-          "forecast": 6.8588
+          "forecast": 6.8479
         },
         {
           "date": "2024-01-01",
           "actual": 2.6989,
-          "forecast": 6.2529
+          "forecast": 6.2406
         },
         {
           "date": "2025-01-01",
           "actual": 5.4633,
-          "forecast": 6.3287
+          "forecast": 6.3022
         }
       ]
     },
@@ -940,8 +940,8 @@
     {
       "horizon_year": 1,
       "spread": 3.3224,
-      "std": 1.1778,
-      "ensemble_q50": 5.4541,
+      "std": 1.1834,
+      "ensemble_q50": 5.4606,
       "high_disagreement": true,
       "outlier_models": [
         "arx"
@@ -950,8 +950,8 @@
     {
       "horizon_year": 2,
       "spread": 3.3148,
-      "std": 1.1866,
-      "ensemble_q50": 5.4664,
+      "std": 1.1695,
+      "ensemble_q50": 5.4467,
       "high_disagreement": true,
       "outlier_models": [
         "arx"
@@ -960,8 +960,8 @@
     {
       "horizon_year": 3,
       "spread": 3.499,
-      "std": 1.3109,
-      "ensemble_q50": 5.4601,
+      "std": 1.2978,
+      "ensemble_q50": 5.4436,
       "high_disagreement": true,
       "outlier_models": [
         "arx"
