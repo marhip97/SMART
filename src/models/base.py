@@ -43,8 +43,10 @@ class EvaluationResult:
         model_id:     Model ID.
         rmse:         Root mean squared error of point forecasts (q50).
         mae:          Mean absolute error of point forecasts.
+        r2:           Out-of-sample R² (can be negative if worse than naïve mean).
         n_obs:        Number of out-of-sample observations evaluated.
         details:      Optional per-horizon or per-period breakdown.
+                      details["backtest"] holds per-year actual vs forecast pairs.
     """
 
     variable_id: str
@@ -52,6 +54,7 @@ class EvaluationResult:
     rmse: float
     mae: float
     n_obs: int
+    r2: float = field(default_factory=lambda: float("nan"))
     details: dict[str, Any] = field(default_factory=dict)
 
 

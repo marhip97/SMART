@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SMART – System for Model Analysis in Real Time</title>
+  <title>SMART – Makroprognoser</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.plot.ly/plotly-2.32.0.min.js" defer></script>
   <script src="app.js" defer></script>
@@ -14,30 +14,29 @@
     <div class="header-inner">
       <div class="brand">
         <h1>SMART</h1>
-        <p class="tagline">System for Model Analysis in Real Time</p>
+        <p class="tagline">Kryssjekkmodeller for norsk økonomi</p>
       </div>
-      <div class="meta">
-        <span id="last-updated" class="last-updated">Laster...</span>
-      </div>
+      <span id="last-updated" class="last-updated">Laster…</span>
     </div>
   </header>
 
   <div class="disclaimer-bar" role="alert">
-    <strong>Merk:</strong> SMART er et eksperimentelt kryssjekkverktøy. Prognosene er ikke offisielle
-    og skal ikke brukes som grunnlag for investerings- eller policybeslutninger.
+    <strong>Merk:</strong> SMART er et eksperimentelt verktøy for å sammenstille og kryssjekke modellprognoser.
+    Prognosene er ikke offisielle og skal ikke brukes som grunnlag for investerings- eller policybeslutninger.
   </div>
 
   <div class="layout">
 
     <nav class="sidebar" aria-label="Variabler">
-      <p class="sidebar-label">Variabler</p>
+      <p class="sidebar-label">Velg variabel</p>
       <ul id="variable-list" role="list"></ul>
     </nav>
 
     <main class="content" id="main-content">
 
       <div id="loading-state" class="empty-state">
-        <p>Laster prognosedata&hellip;</p>
+        <div class="spinner"></div>
+        <p>Henter prognosedata…</p>
       </div>
 
       <div id="error-state" class="empty-state error" hidden>
@@ -46,60 +45,84 @@
 
       <div id="variable-panel" hidden>
 
-        <section class="panel">
-          <div class="panel-header">
+        <!-- ── Tittel og nøkkeltall ───────────────────────────── -->
+        <div class="var-header">
+          <div class="var-title-row">
             <h2 id="var-title"></h2>
             <span id="var-unit" class="unit-badge"></span>
           </div>
+          <div id="key-figures" class="key-figures"></div>
+        </div>
+
+        <!-- ── Samlet prognose med historikk ─────────────────── -->
+        <section class="panel">
+          <div class="panel-header">
+            <h3 class="panel-subheader">Historikk og prognose</h3>
+            <div class="chart-toggle" id="fan-toggle">
+              <button class="toggle-btn active" data-chart="ensemble">Ensemble</button>
+              <button class="toggle-btn" data-chart="models">Enkeltmodeller</button>
+            </div>
+          </div>
           <p class="section-description">
-            Ensemble-prognose (medianlinje) med usikkerhetsintervall (10.–90. persentil).
-            Prognosen kombinerer flere modeller med prestasjonsvekting.
+            Grå linje viser faktiske observasjoner. Den blå linjen er den samlede prognosen
+            (medianen av alle modeller vektet etter treffsikkerhet). Det blå feltet er
+            usikkerhetsintervallet: 80&nbsp;% av modellenes prognoser faller innenfor dette
+            området (10.–90. persentil).
           </p>
           <div id="ensemble-chart" class="chart-container"></div>
+          <div id="model-chart" class="chart-container" hidden></div>
         </section>
 
+        <!-- ── Modellenes treffsikkerhet ─────────────────────── -->
         <section class="panel">
-          <h3 class="panel-subheader">Modellenes individuelle prognoser</h3>
+          <h3 class="panel-subheader">Modellenes historiske treffsikkerhet</h3>
           <p class="section-description">
-            Medianprognoser fra samtlige modeller – ulike kurver indikerer modellspriket.
+            Beregnet ved <em>walk-forward backtesting</em>: for hvert år i historien trenes
+            modellen kun på data fra tidligere år, og prognosen sammenlignes med det faktiske
+            utfallet ett år frem. Lav RMSE og MAE betyr høy treffsikkerhet.
+            R² viser hvor mye bedre modellen treffer enn en naiv gjennomsnittsprognose
+            (1,0 = perfekt, negativ = dårligere enn gjennomsnittet).
           </p>
-          <div id="model-chart" class="chart-container chart-sm"></div>
-        </section>
-
-        <div class="two-col">
-
-          <section class="panel">
-            <h3 class="panel-subheader">Modellvekter (ensemble)</h3>
-            <p class="section-description">
-              Vektene er inversely proportional til gjennomsnittlig RMSE i backtesting.
-            </p>
-            <table id="weights-table" class="data-table">
-              <thead><tr><th>Modell</th><th>Vekt</th></tr></thead>
+          <div class="table-scroll">
+            <table id="accuracy-table" class="data-table">
+              <thead>
+                <tr>
+                  <th>Modell</th>
+                  <th title="Rot av gjennomsnittlig kvadratavvik">RMSE</th>
+                  <th title="Gjennomsnittlig absolutt avvik">MAE</th>
+                  <th title="Forklaringsgrad ut av utvalg">R²</th>
+                  <th title="Antall evalueringsperioder">Obs.</th>
+                  <th>Ensemblevekt</th>
+                </tr>
+              </thead>
               <tbody></tbody>
             </table>
-          </section>
+          </div>
+        </section>
 
-          <section class="panel">
-            <h3 class="panel-subheader">Modellsprik per horisontår</h3>
-            <p class="section-description">
-              Sprik = maks&minus;min mellom modellenes medianprognoser.
-              Høy uenighet markert med <span class="flag-badge">!</span>.
-            </p>
+        <!-- ── Modellsprik ────────────────────────────────────── -->
+        <section class="panel">
+          <h3 class="panel-subheader">Hvor enige er modellene?</h3>
+          <p class="section-description">
+            Sprik er avstanden mellom den høyeste og laveste modellprognosen for hvert år.
+            Høyt sprik betyr at modellene er uenige – prognosene bør tolkes med ekstra
+            forsiktighet. Rader merket med <span class="flag-badge">!</span> har spesielt høy uenighet.
+          </p>
+          <div class="table-scroll">
             <table id="disagreement-table" class="data-table">
               <thead>
                 <tr>
                   <th>År</th>
-                  <th>Ensemble q50</th>
-                  <th>Sprik</th>
-                  <th>Std</th>
+                  <th>Samlet prognose</th>
+                  <th title="Maks minus min blant modellene">Sprik (max–min)</th>
+                  <th title="Standardavvik mellom modellenes medianer">Std.avvik</th>
                   <th></th>
                 </tr>
               </thead>
               <tbody></tbody>
             </table>
-          </section>
-
-        </div>
+          </div>
+        </section>
 
       </div><!-- #variable-panel -->
 
@@ -108,9 +131,9 @@
 
   <footer class="site-footer">
     <p>
-      SMART er åpen kildekode (MIT-lisens). Data fra SSB (NLOD 2.0), Norges Bank (CC BY 4.0)
-      og FRED (ikke-kommersiell). Kildekode på
-      <a href="https://github.com/marhip97/smart" target="_blank" rel="noopener">GitHub</a>.
+      SMART er åpen kildekode (MIT-lisens) ·
+      Data: SSB (NLOD 2.0), Norges Bank (CC BY 4.0), FRED (ikke-kommersiell) ·
+      <a href="https://github.com/marhip97/smart" target="_blank" rel="noopener">GitHub</a>
     </p>
   </footer>
 

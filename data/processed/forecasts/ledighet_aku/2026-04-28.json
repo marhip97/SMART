@@ -1,6 +1,88 @@
 {
   "variable_id": "ledighet_aku",
   "run_date": "2026-04-28",
+  "history": [
+    {
+      "date": "2006-01-01",
+      "value": 3.4
+    },
+    {
+      "date": "2007-01-01",
+      "value": 2.5
+    },
+    {
+      "date": "2008-01-01",
+      "value": 2.7
+    },
+    {
+      "date": "2009-01-01",
+      "value": 3.3
+    },
+    {
+      "date": "2010-01-01",
+      "value": 3.8
+    },
+    {
+      "date": "2011-01-01",
+      "value": 3.4
+    },
+    {
+      "date": "2012-01-01",
+      "value": 3.3
+    },
+    {
+      "date": "2013-01-01",
+      "value": 3.8
+    },
+    {
+      "date": "2014-01-01",
+      "value": 3.6
+    },
+    {
+      "date": "2015-01-01",
+      "value": 4.5
+    },
+    {
+      "date": "2016-01-01",
+      "value": 4.7
+    },
+    {
+      "date": "2017-01-01",
+      "value": 4.2
+    },
+    {
+      "date": "2018-01-01",
+      "value": 3.8
+    },
+    {
+      "date": "2019-01-01",
+      "value": 3.7
+    },
+    {
+      "date": "2020-01-01",
+      "value": 4.6
+    },
+    {
+      "date": "2021-01-01",
+      "value": 4.4
+    },
+    {
+      "date": "2022-01-01",
+      "value": 3.2
+    },
+    {
+      "date": "2023-01-01",
+      "value": 3.6
+    },
+    {
+      "date": "2024-01-01",
+      "value": 4.0
+    },
+    {
+      "date": "2025-01-01",
+      "value": 4.5
+    }
+  ],
   "ensemble": {
     "weighting": "performance",
     "forecasts": [
@@ -19,17 +101,17 @@
       {
         "date": "2028-01-01",
         "q10": 2.4498,
-        "q50": 3.8224,
+        "q50": 3.8225,
         "q90": 5.2453
       }
     ],
     "weights": {
       "var": 0.05,
       "arx": 0.05,
-      "arima": 0.0871,
-      "bvar": 0.2319,
-      "dfm": 0.2963,
-      "ml_baseline": 0.2847
+      "arima": 0.0881,
+      "bvar": 0.2316,
+      "dfm": 0.296,
+      "ml_baseline": 0.2844
     }
   },
   "models": {
@@ -154,6 +236,1221 @@
       }
     ]
   },
+  "evaluation": {
+    "arima": {
+      "rmse": 2.2038,
+      "mae": 0.9384,
+      "r2": -4.5504,
+      "n_obs": 43,
+      "backtest": [
+        {
+          "date": "1983-01-01",
+          "actual": 3.4,
+          "forecast": 4.1265
+        },
+        {
+          "date": "1984-01-01",
+          "actual": 3.2,
+          "forecast": 16.6311
+        },
+        {
+          "date": "1985-01-01",
+          "actual": 2.6,
+          "forecast": 4.1992
+        },
+        {
+          "date": "1986-01-01",
+          "actual": 2.0,
+          "forecast": 2.1555
+        },
+        {
+          "date": "1987-01-01",
+          "actual": 2.1,
+          "forecast": 3.1185
+        },
+        {
+          "date": "1988-01-01",
+          "actual": 3.2,
+          "forecast": 3.7379
+        },
+        {
+          "date": "1989-01-01",
+          "actual": 4.9,
+          "forecast": 3.7584
+        },
+        {
+          "date": "1990-01-01",
+          "actual": 5.2,
+          "forecast": 3.1167
+        },
+        {
+          "date": "1991-01-01",
+          "actual": 5.5,
+          "forecast": 3.9314
+        },
+        {
+          "date": "1992-01-01",
+          "actual": 5.9,
+          "forecast": 5.7962
+        },
+        {
+          "date": "1993-01-01",
+          "actual": 6.0,
+          "forecast": 6.3367
+        },
+        {
+          "date": "1994-01-01",
+          "actual": 5.4,
+          "forecast": 6.48
+        },
+        {
+          "date": "1995-01-01",
+          "actual": 4.9,
+          "forecast": 5.8006
+        },
+        {
+          "date": "1996-01-01",
+          "actual": 4.8,
+          "forecast": 5.8216
+        },
+        {
+          "date": "1997-01-01",
+          "actual": 4.0,
+          "forecast": 5.8726
+        },
+        {
+          "date": "1998-01-01",
+          "actual": 3.2,
+          "forecast": 4.1043
+        },
+        {
+          "date": "1999-01-01",
+          "actual": 3.2,
+          "forecast": 3.0385
+        },
+        {
+          "date": "2000-01-01",
+          "actual": 3.4,
+          "forecast": 3.5444
+        },
+        {
+          "date": "2001-01-01",
+          "actual": 3.5,
+          "forecast": 3.4326
+        },
+        {
+          "date": "2002-01-01",
+          "actual": 3.9,
+          "forecast": 3.7164
+        },
+        {
+          "date": "2003-01-01",
+          "actual": 4.5,
+          "forecast": 4.2988
+        },
+        {
+          "date": "2004-01-01",
+          "actual": 4.5,
+          "forecast": 5.0158
+        },
+        {
+          "date": "2005-01-01",
+          "actual": 4.6,
+          "forecast": 4.359
+        },
+        {
+          "date": "2006-01-01",
+          "actual": 3.4,
+          "forecast": 4.9463
+        },
+        {
+          "date": "2007-01-01",
+          "actual": 2.5,
+          "forecast": 2.6137
+        },
+        {
+          "date": "2008-01-01",
+          "actual": 2.7,
+          "forecast": 2.7956
+        },
+        {
+          "date": "2009-01-01",
+          "actual": 3.3,
+          "forecast": 3.5757
+        },
+        {
+          "date": "2010-01-01",
+          "actual": 3.8,
+          "forecast": 4.0343
+        },
+        {
+          "date": "2011-01-01",
+          "actual": 3.4,
+          "forecast": 4.0932
+        },
+        {
+          "date": "2012-01-01",
+          "actual": 3.3,
+          "forecast": 2.9713
+        },
+        {
+          "date": "2013-01-01",
+          "actual": 3.8,
+          "forecast": 3.5607
+        },
+        {
+          "date": "2014-01-01",
+          "actual": 3.6,
+          "forecast": 4.243
+        },
+        {
+          "date": "2015-01-01",
+          "actual": 4.5,
+          "forecast": 3.432
+        },
+        {
+          "date": "2016-01-01",
+          "actual": 4.7,
+          "forecast": 5.206
+        },
+        {
+          "date": "2017-01-01",
+          "actual": 4.2,
+          "forecast": 4.4897
+        },
+        {
+          "date": "2018-01-01",
+          "actual": 3.8,
+          "forecast": 4.0688
+        },
+        {
+          "date": "2019-01-01",
+          "actual": 3.7,
+          "forecast": 3.9061
+        },
+        {
+          "date": "2020-01-01",
+          "actual": 4.6,
+          "forecast": 4.0624
+        },
+        {
+          "date": "2021-01-01",
+          "actual": 4.4,
+          "forecast": 5.2928
+        },
+        {
+          "date": "2022-01-01",
+          "actual": 3.2,
+          "forecast": 4.157
+        },
+        {
+          "date": "2023-01-01",
+          "actual": 3.6,
+          "forecast": 3.0732
+        },
+        {
+          "date": "2024-01-01",
+          "actual": 4.0,
+          "forecast": 4.2717
+        },
+        {
+          "date": "2025-01-01",
+          "actual": 4.5,
+          "forecast": 3.8389
+        }
+      ]
+    },
+    "bvar": {
+      "rmse": 0.8382,
+      "mae": 0.5942,
+      "r2": 0.1971,
+      "n_obs": 43,
+      "backtest": [
+        {
+          "date": "1983-01-01",
+          "actual": 3.4,
+          "forecast": 1.9179
+        },
+        {
+          "date": "1984-01-01",
+          "actual": 3.2,
+          "forecast": 2.1586
+        },
+        {
+          "date": "1985-01-01",
+          "actual": 2.6,
+          "forecast": 2.3623
+        },
+        {
+          "date": "1986-01-01",
+          "actual": 2.0,
+          "forecast": 2.3157
+        },
+        {
+          "date": "1987-01-01",
+          "actual": 2.1,
+          "forecast": 2.1817
+        },
+        {
+          "date": "1988-01-01",
+          "actual": 3.2,
+          "forecast": 2.186
+        },
+        {
+          "date": "1989-01-01",
+          "actual": 4.9,
+          "forecast": 2.3915
+        },
+        {
+          "date": "1990-01-01",
+          "actual": 5.2,
+          "forecast": 2.8758
+        },
+        {
+          "date": "1991-01-01",
+          "actual": 5.5,
+          "forecast": 3.632
+        },
+        {
+          "date": "1992-01-01",
+          "actual": 5.9,
+          "forecast": 4.3978
+        },
+        {
+          "date": "1993-01-01",
+          "actual": 6.0,
+          "forecast": 5.1746
+        },
+        {
+          "date": "1994-01-01",
+          "actual": 5.4,
+          "forecast": 5.5429
+        },
+        {
+          "date": "1995-01-01",
+          "actual": 4.9,
+          "forecast": 5.0282
+        },
+        {
+          "date": "1996-01-01",
+          "actual": 4.8,
+          "forecast": 4.6175
+        },
+        {
+          "date": "1997-01-01",
+          "actual": 4.0,
+          "forecast": 4.5549
+        },
+        {
+          "date": "1998-01-01",
+          "actual": 3.2,
+          "forecast": 3.9644
+        },
+        {
+          "date": "1999-01-01",
+          "actual": 3.2,
+          "forecast": 3.3828
+        },
+        {
+          "date": "2000-01-01",
+          "actual": 3.4,
+          "forecast": 3.3577
+        },
+        {
+          "date": "2001-01-01",
+          "actual": 3.5,
+          "forecast": 3.4922
+        },
+        {
+          "date": "2002-01-01",
+          "actual": 3.9,
+          "forecast": 3.5599
+        },
+        {
+          "date": "2003-01-01",
+          "actual": 4.5,
+          "forecast": 3.8421
+        },
+        {
+          "date": "2004-01-01",
+          "actual": 4.5,
+          "forecast": 4.2631
+        },
+        {
+          "date": "2005-01-01",
+          "actual": 4.6,
+          "forecast": 4.2735
+        },
+        {
+          "date": "2006-01-01",
+          "actual": 3.4,
+          "forecast": 4.3646
+        },
+        {
+          "date": "2007-01-01",
+          "actual": 2.5,
+          "forecast": 3.5336
+        },
+        {
+          "date": "2008-01-01",
+          "actual": 2.7,
+          "forecast": 2.9127
+        },
+        {
+          "date": "2009-01-01",
+          "actual": 3.3,
+          "forecast": 3.0602
+        },
+        {
+          "date": "2010-01-01",
+          "actual": 3.8,
+          "forecast": 3.4427
+        },
+        {
+          "date": "2011-01-01",
+          "actual": 3.4,
+          "forecast": 3.7679
+        },
+        {
+          "date": "2012-01-01",
+          "actual": 3.3,
+          "forecast": 3.4832
+        },
+        {
+          "date": "2013-01-01",
+          "actual": 3.8,
+          "forecast": 3.4234
+        },
+        {
+          "date": "2014-01-01",
+          "actual": 3.6,
+          "forecast": 3.7597
+        },
+        {
+          "date": "2015-01-01",
+          "actual": 4.5,
+          "forecast": 3.606
+        },
+        {
+          "date": "2016-01-01",
+          "actual": 4.7,
+          "forecast": 4.1977
+        },
+        {
+          "date": "2017-01-01",
+          "actual": 4.2,
+          "forecast": 4.322
+        },
+        {
+          "date": "2018-01-01",
+          "actual": 3.8,
+          "forecast": 3.9882
+        },
+        {
+          "date": "2019-01-01",
+          "actual": 3.7,
+          "forecast": 3.7472
+        },
+        {
+          "date": "2020-01-01",
+          "actual": 4.6,
+          "forecast": 3.6949
+        },
+        {
+          "date": "2021-01-01",
+          "actual": 4.4,
+          "forecast": 4.2803
+        },
+        {
+          "date": "2022-01-01",
+          "actual": 3.2,
+          "forecast": 4.1305
+        },
+        {
+          "date": "2023-01-01",
+          "actual": 3.6,
+          "forecast": 3.3815
+        },
+        {
+          "date": "2024-01-01",
+          "actual": 4.0,
+          "forecast": 3.6478
+        },
+        {
+          "date": "2025-01-01",
+          "actual": 4.5,
+          "forecast": 3.8948
+        }
+      ]
+    },
+    "var": {
+      "rmse": 3.9241,
+      "mae": 1.4535,
+      "r2": -16.5979,
+      "n_obs": 43,
+      "backtest": [
+        {
+          "date": "1983-01-01",
+          "actual": 3.4,
+          "forecast": 15.3654
+        },
+        {
+          "date": "1984-01-01",
+          "actual": 3.2,
+          "forecast": 24.6076
+        },
+        {
+          "date": "1985-01-01",
+          "actual": 2.6,
+          "forecast": 7.8069
+        },
+        {
+          "date": "1986-01-01",
+          "actual": 2.0,
+          "forecast": 2.127
+        },
+        {
+          "date": "1987-01-01",
+          "actual": 2.1,
+          "forecast": 1.9904
+        },
+        {
+          "date": "1988-01-01",
+          "actual": 3.2,
+          "forecast": 2.2218
+        },
+        {
+          "date": "1989-01-01",
+          "actual": 4.9,
+          "forecast": 2.6926
+        },
+        {
+          "date": "1990-01-01",
+          "actual": 5.2,
+          "forecast": 4.1526
+        },
+        {
+          "date": "1991-01-01",
+          "actual": 5.5,
+          "forecast": 4.048
+        },
+        {
+          "date": "1992-01-01",
+          "actual": 5.9,
+          "forecast": 7.5663
+        },
+        {
+          "date": "1993-01-01",
+          "actual": 6.0,
+          "forecast": 9.324
+        },
+        {
+          "date": "1994-01-01",
+          "actual": 5.4,
+          "forecast": 7.3365
+        },
+        {
+          "date": "1995-01-01",
+          "actual": 4.9,
+          "forecast": 5.2388
+        },
+        {
+          "date": "1996-01-01",
+          "actual": 4.8,
+          "forecast": 5.0141
+        },
+        {
+          "date": "1997-01-01",
+          "actual": 4.0,
+          "forecast": 5.006
+        },
+        {
+          "date": "1998-01-01",
+          "actual": 3.2,
+          "forecast": 3.3498
+        },
+        {
+          "date": "1999-01-01",
+          "actual": 3.2,
+          "forecast": 2.7556
+        },
+        {
+          "date": "2000-01-01",
+          "actual": 3.4,
+          "forecast": 3.3074
+        },
+        {
+          "date": "2001-01-01",
+          "actual": 3.5,
+          "forecast": 3.3847
+        },
+        {
+          "date": "2002-01-01",
+          "actual": 3.9,
+          "forecast": 3.5156
+        },
+        {
+          "date": "2003-01-01",
+          "actual": 4.5,
+          "forecast": 4.065
+        },
+        {
+          "date": "2004-01-01",
+          "actual": 4.5,
+          "forecast": 4.5513
+        },
+        {
+          "date": "2005-01-01",
+          "actual": 4.6,
+          "forecast": 4.1684
+        },
+        {
+          "date": "2006-01-01",
+          "actual": 3.4,
+          "forecast": 4.5252
+        },
+        {
+          "date": "2007-01-01",
+          "actual": 2.5,
+          "forecast": 2.7272
+        },
+        {
+          "date": "2008-01-01",
+          "actual": 2.7,
+          "forecast": 2.3318
+        },
+        {
+          "date": "2009-01-01",
+          "actual": 3.3,
+          "forecast": 3.4174
+        },
+        {
+          "date": "2010-01-01",
+          "actual": 3.8,
+          "forecast": 3.6781
+        },
+        {
+          "date": "2011-01-01",
+          "actual": 3.4,
+          "forecast": 3.8325
+        },
+        {
+          "date": "2012-01-01",
+          "actual": 3.3,
+          "forecast": 3.1621
+        },
+        {
+          "date": "2013-01-01",
+          "actual": 3.8,
+          "forecast": 3.5154
+        },
+        {
+          "date": "2014-01-01",
+          "actual": 3.6,
+          "forecast": 4.0172
+        },
+        {
+          "date": "2015-01-01",
+          "actual": 4.5,
+          "forecast": 3.4052
+        },
+        {
+          "date": "2016-01-01",
+          "actual": 4.7,
+          "forecast": 4.6325
+        },
+        {
+          "date": "2017-01-01",
+          "actual": 4.2,
+          "forecast": 4.239
+        },
+        {
+          "date": "2018-01-01",
+          "actual": 3.8,
+          "forecast": 3.7877
+        },
+        {
+          "date": "2019-01-01",
+          "actual": 3.7,
+          "forecast": 3.7307
+        },
+        {
+          "date": "2020-01-01",
+          "actual": 4.6,
+          "forecast": 3.7638
+        },
+        {
+          "date": "2021-01-01",
+          "actual": 4.4,
+          "forecast": 4.6549
+        },
+        {
+          "date": "2022-01-01",
+          "actual": 3.2,
+          "forecast": 3.9089
+        },
+        {
+          "date": "2023-01-01",
+          "actual": 3.6,
+          "forecast": 3.1063
+        },
+        {
+          "date": "2024-01-01",
+          "actual": 4.0,
+          "forecast": 4.0576
+        },
+        {
+          "date": "2025-01-01",
+          "actual": 4.5,
+          "forecast": 3.9185
+        }
+      ]
+    },
+    "dfm": {
+      "rmse": 0.6558,
+      "mae": 0.4812,
+      "r2": 0.5085,
+      "n_obs": 43,
+      "backtest": [
+        {
+          "date": "1983-01-01",
+          "actual": 3.4,
+          "forecast": 1.8843
+        },
+        {
+          "date": "1984-01-01",
+          "actual": 3.2,
+          "forecast": 2.9608
+        },
+        {
+          "date": "1985-01-01",
+          "actual": 2.6,
+          "forecast": 2.7824
+        },
+        {
+          "date": "1986-01-01",
+          "actual": 2.0,
+          "forecast": 2.3442
+        },
+        {
+          "date": "1987-01-01",
+          "actual": 2.1,
+          "forecast": 2.0624
+        },
+        {
+          "date": "1988-01-01",
+          "actual": 3.2,
+          "forecast": 2.1037
+        },
+        {
+          "date": "1989-01-01",
+          "actual": 4.9,
+          "forecast": 2.5762
+        },
+        {
+          "date": "1990-01-01",
+          "actual": 5.2,
+          "forecast": 4.4696
+        },
+        {
+          "date": "1991-01-01",
+          "actual": 5.5,
+          "forecast": 5.0879
+        },
+        {
+          "date": "1992-01-01",
+          "actual": 5.9,
+          "forecast": 5.505
+        },
+        {
+          "date": "1993-01-01",
+          "actual": 6.0,
+          "forecast": 6.0338
+        },
+        {
+          "date": "1994-01-01",
+          "actual": 5.4,
+          "forecast": 6.0369
+        },
+        {
+          "date": "1995-01-01",
+          "actual": 4.9,
+          "forecast": 5.1676
+        },
+        {
+          "date": "1996-01-01",
+          "actual": 4.8,
+          "forecast": 4.6381
+        },
+        {
+          "date": "1997-01-01",
+          "actual": 4.0,
+          "forecast": 4.5517
+        },
+        {
+          "date": "1998-01-01",
+          "actual": 3.2,
+          "forecast": 3.8465
+        },
+        {
+          "date": "1999-01-01",
+          "actual": 3.2,
+          "forecast": 3.2024
+        },
+        {
+          "date": "2000-01-01",
+          "actual": 3.4,
+          "forecast": 3.2023
+        },
+        {
+          "date": "2001-01-01",
+          "actual": 3.5,
+          "forecast": 3.3608
+        },
+        {
+          "date": "2002-01-01",
+          "actual": 3.9,
+          "forecast": 3.4414
+        },
+        {
+          "date": "2003-01-01",
+          "actual": 4.5,
+          "forecast": 3.7618
+        },
+        {
+          "date": "2004-01-01",
+          "actual": 4.5,
+          "forecast": 4.2559
+        },
+        {
+          "date": "2005-01-01",
+          "actual": 4.6,
+          "forecast": 4.2645
+        },
+        {
+          "date": "2006-01-01",
+          "actual": 3.4,
+          "forecast": 4.3572
+        },
+        {
+          "date": "2007-01-01",
+          "actual": 2.5,
+          "forecast": 3.3912
+        },
+        {
+          "date": "2008-01-01",
+          "actual": 2.7,
+          "forecast": 2.6995
+        },
+        {
+          "date": "2009-01-01",
+          "actual": 3.3,
+          "forecast": 2.8491
+        },
+        {
+          "date": "2010-01-01",
+          "actual": 3.8,
+          "forecast": 3.3052
+        },
+        {
+          "date": "2011-01-01",
+          "actual": 3.4,
+          "forecast": 3.6831
+        },
+        {
+          "date": "2012-01-01",
+          "actual": 3.3,
+          "forecast": 3.3834
+        },
+        {
+          "date": "2013-01-01",
+          "actual": 3.8,
+          "forecast": 3.3087
+        },
+        {
+          "date": "2014-01-01",
+          "actual": 3.6,
+          "forecast": 3.6833
+        },
+        {
+          "date": "2015-01-01",
+          "actual": 4.5,
+          "forecast": 3.5356
+        },
+        {
+          "date": "2016-01-01",
+          "actual": 4.7,
+          "forecast": 4.2147
+        },
+        {
+          "date": "2017-01-01",
+          "actual": 4.2,
+          "forecast": 4.3817
+        },
+        {
+          "date": "2018-01-01",
+          "actual": 3.8,
+          "forecast": 3.9983
+        },
+        {
+          "date": "2019-01-01",
+          "actual": 3.7,
+          "forecast": 3.7018
+        },
+        {
+          "date": "2020-01-01",
+          "actual": 4.6,
+          "forecast": 3.6297
+        },
+        {
+          "date": "2021-01-01",
+          "actual": 4.4,
+          "forecast": 4.3006
+        },
+        {
+          "date": "2022-01-01",
+          "actual": 3.2,
+          "forecast": 4.1552
+        },
+        {
+          "date": "2023-01-01",
+          "actual": 3.6,
+          "forecast": 3.2801
+        },
+        {
+          "date": "2024-01-01",
+          "actual": 4.0,
+          "forecast": 3.5638
+        },
+        {
+          "date": "2025-01-01",
+          "actual": 4.5,
+          "forecast": 3.8494
+        }
+      ]
+    },
+    "arx": {
+      "rmse": 4.0624,
+      "mae": 1.7011,
+      "r2": -17.0732,
+      "n_obs": 41,
+      "backtest": [
+        {
+          "date": "1983-01-01",
+          "actual": 3.4,
+          "forecast": 15.3654
+        },
+        {
+          "date": "1984-01-01",
+          "actual": 3.2,
+          "forecast": 24.6076
+        },
+        {
+          "date": "1985-01-01",
+          "actual": 2.6,
+          "forecast": 7.8069
+        },
+        {
+          "date": "1986-01-01",
+          "actual": 2.0,
+          "forecast": 2.127
+        },
+        {
+          "date": "1987-01-01",
+          "actual": 2.1,
+          "forecast": 1.9904
+        },
+        {
+          "date": "1988-01-01",
+          "actual": 3.2,
+          "forecast": 2.2218
+        },
+        {
+          "date": "1989-01-01",
+          "actual": 4.9,
+          "forecast": 2.6926
+        },
+        {
+          "date": "1990-01-01",
+          "actual": 5.2,
+          "forecast": 4.1526
+        },
+        {
+          "date": "1991-01-01",
+          "actual": 5.5,
+          "forecast": 4.048
+        },
+        {
+          "date": "1992-01-01",
+          "actual": 5.9,
+          "forecast": 7.5663
+        },
+        {
+          "date": "1993-01-01",
+          "actual": 6.0,
+          "forecast": 9.324
+        },
+        {
+          "date": "1994-01-01",
+          "actual": 5.4,
+          "forecast": 7.3365
+        },
+        {
+          "date": "1995-01-01",
+          "actual": 4.9,
+          "forecast": 5.2388
+        },
+        {
+          "date": "1996-01-01",
+          "actual": 4.8,
+          "forecast": 5.0141
+        },
+        {
+          "date": "1997-01-01",
+          "actual": 4.0,
+          "forecast": 5.006
+        },
+        {
+          "date": "1998-01-01",
+          "actual": 3.2,
+          "forecast": 3.3498
+        },
+        {
+          "date": "1999-01-01",
+          "actual": 3.2,
+          "forecast": 2.7556
+        },
+        {
+          "date": "2000-01-01",
+          "actual": 3.4,
+          "forecast": 3.3074
+        },
+        {
+          "date": "2003-01-01",
+          "actual": 4.5,
+          "forecast": 3.9
+        },
+        {
+          "date": "2004-01-01",
+          "actual": 4.5,
+          "forecast": 4.5
+        },
+        {
+          "date": "2005-01-01",
+          "actual": 4.6,
+          "forecast": 4.5
+        },
+        {
+          "date": "2006-01-01",
+          "actual": 3.4,
+          "forecast": 4.6012
+        },
+        {
+          "date": "2007-01-01",
+          "actual": 2.5,
+          "forecast": 3.6071
+        },
+        {
+          "date": "2008-01-01",
+          "actual": 2.7,
+          "forecast": 2.5759
+        },
+        {
+          "date": "2009-01-01",
+          "actual": 3.3,
+          "forecast": 0.2902
+        },
+        {
+          "date": "2010-01-01",
+          "actual": 3.8,
+          "forecast": 3.2899
+        },
+        {
+          "date": "2011-01-01",
+          "actual": 3.4,
+          "forecast": 4.1523
+        },
+        {
+          "date": "2012-01-01",
+          "actual": 3.3,
+          "forecast": 4.0501
+        },
+        {
+          "date": "2013-01-01",
+          "actual": 3.8,
+          "forecast": 3.3211
+        },
+        {
+          "date": "2014-01-01",
+          "actual": 3.6,
+          "forecast": 3.2597
+        },
+        {
+          "date": "2015-01-01",
+          "actual": 4.5,
+          "forecast": 3.3582
+        },
+        {
+          "date": "2016-01-01",
+          "actual": 4.7,
+          "forecast": 4.0029
+        },
+        {
+          "date": "2017-01-01",
+          "actual": 4.2,
+          "forecast": 4.7888
+        },
+        {
+          "date": "2018-01-01",
+          "actual": 3.8,
+          "forecast": 4.8594
+        },
+        {
+          "date": "2019-01-01",
+          "actual": 3.7,
+          "forecast": 4.652
+        },
+        {
+          "date": "2020-01-01",
+          "actual": 4.6,
+          "forecast": 4.5164
+        },
+        {
+          "date": "2021-01-01",
+          "actual": 4.4,
+          "forecast": 4.6211
+        },
+        {
+          "date": "2022-01-01",
+          "actual": 3.2,
+          "forecast": 4.3443
+        },
+        {
+          "date": "2023-01-01",
+          "actual": 3.6,
+          "forecast": 4.2601
+        },
+        {
+          "date": "2024-01-01",
+          "actual": 4.0,
+          "forecast": 4.4215
+        },
+        {
+          "date": "2025-01-01",
+          "actual": 4.5,
+          "forecast": 4.3745
+        }
+      ]
+    },
+    "ml_baseline": {
+      "rmse": 0.6825,
+      "mae": 0.5727,
+      "r2": -0.3103,
+      "n_obs": 20,
+      "backtest": [
+        {
+          "date": "2006-01-01",
+          "actual": 3.4,
+          "forecast": 4.6
+        },
+        {
+          "date": "2007-01-01",
+          "actual": 2.5,
+          "forecast": 3.9
+        },
+        {
+          "date": "2008-01-01",
+          "actual": 2.7,
+          "forecast": 3.4
+        },
+        {
+          "date": "2009-01-01",
+          "actual": 3.3,
+          "forecast": 2.7
+        },
+        {
+          "date": "2010-01-01",
+          "actual": 3.8,
+          "forecast": 3.3
+        },
+        {
+          "date": "2011-01-01",
+          "actual": 3.4,
+          "forecast": 3.8
+        },
+        {
+          "date": "2012-01-01",
+          "actual": 3.3,
+          "forecast": 3.4
+        },
+        {
+          "date": "2013-01-01",
+          "actual": 3.8,
+          "forecast": 3.3
+        },
+        {
+          "date": "2014-01-01",
+          "actual": 3.6,
+          "forecast": 3.8
+        },
+        {
+          "date": "2015-01-01",
+          "actual": 4.5,
+          "forecast": 3.6
+        },
+        {
+          "date": "2016-01-01",
+          "actual": 4.7,
+          "forecast": 3.8
+        },
+        {
+          "date": "2017-01-01",
+          "actual": 4.2,
+          "forecast": 4.5
+        },
+        {
+          "date": "2018-01-01",
+          "actual": 3.8,
+          "forecast": 3.4
+        },
+        {
+          "date": "2019-01-01",
+          "actual": 3.7,
+          "forecast": 3.8
+        },
+        {
+          "date": "2020-01-01",
+          "actual": 4.6,
+          "forecast": 3.7
+        },
+        {
+          "date": "2021-01-01",
+          "actual": 4.4,
+          "forecast": 4.6
+        },
+        {
+          "date": "2022-01-01",
+          "actual": 3.2,
+          "forecast": 4.2
+        },
+        {
+          "date": "2023-01-01",
+          "actual": 3.6,
+          "forecast": 3.7
+        },
+        {
+          "date": "2024-01-01",
+          "actual": 4.0,
+          "forecast": 3.645
+        },
+        {
+          "date": "2025-01-01",
+          "actual": 4.5,
+          "forecast": 3.8
+        }
+      ]
+    }
+  },
   "disagreement": [
     {
       "horizon_year": 1,
@@ -167,7 +1464,7 @@
     },
     {
       "horizon_year": 2,
-      "spread": 0.6329,
+      "spread": 0.6328,
       "std": 0.2262,
       "ensemble_q50": 4.0297,
       "high_disagreement": true,

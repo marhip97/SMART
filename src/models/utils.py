@@ -81,6 +81,8 @@ def walk_forward_eval(
         X_annual = None
 
     errors: list[float] = []
+    actuals: list[float] = []
+    backtest: list[dict] = []
 
     for cutoff in y_annual.index[min_train_years:-1]:
         y_train = y_annual.loc[:cutoff]
@@ -102,6 +104,12 @@ def walk_forward_eval(
             continue
         actual = float(y_annual.loc[next_year])
         errors.append(q50_next_year - actual)
+        actuals.append(actual)
+        backtest.append({
+            "date": next_year.strftime("%Y-%m-%d"),
+            "actual": round(actual, 4),
+            "forecast": round(q50_next_year, 4),
+        })
 
     if not errors:
         return EvaluationResult(
@@ -113,10 +121,17 @@ def walk_forward_eval(
         )
 
     arr = np.array(errors)
+    arr_actuals = np.array(actuals)
+    ss_res = float(np.sum(arr**2))
+    ss_tot = float(np.sum((arr_actuals - np.mean(arr_actuals))**2))
+    r2 = float(1.0 - ss_res / ss_tot) if ss_tot > 0 else float("nan")
+
     return EvaluationResult(
         variable_id=model.variable_id,
         model_id=model.model_id,
         rmse=float(np.sqrt(np.mean(arr**2))),
         mae=float(np.mean(np.abs(arr))),
         n_obs=len(arr),
+        r2=r2,
+        details={"backtest": backtest},
     )

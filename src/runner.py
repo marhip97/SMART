@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 import logging
+import math
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -95,6 +96,13 @@ def _applies_to(model_cfg: dict, variable_id: str) -> bool:
     return variable_id in applies_to
 
 
+def _isnan(v: float) -> bool:
+    try:
+        return math.isnan(v)
+    except (TypeError, ValueError):
+        return True
+
+
 def _records(forecasts_df: pd.DataFrame) -> list[dict]:
     return [
         {
@@ -107,14 +115,23 @@ def _records(forecasts_df: pd.DataFrame) -> list[dict]:
     ]
 
 
+def _apply_transform(y_annual: pd.Series, var_cfg: dict) -> pd.Series:
+    """Convert annual index-level series to YoY % change when the config requires it."""
+    if var_cfg.get("transform") == "yoy_pct" and var_cfg.get("unit") == "index":
+        return (y_annual.pct_change() * 100).dropna()
+    return y_annual
+
+
 def run_variable(
     variable_id: str,
     y_raw: pd.Series,
     X_raw: pd.DataFrame | None,
     models_cfg: list[dict],
+    var_cfg: dict | None = None,
 ) -> dict | None:
     """Fit all applicable models for one target variable and return a results dict."""
     y = resample_to_annual(y_raw).dropna()
+    y = _apply_transform(y, var_cfg or {})
     X = X_raw.resample("YS").mean() if X_raw is not None else None
 
     if len(y) < 5:
@@ -124,6 +141,7 @@ def run_variable(
     forecast_results: list[ForecastResult] = []
     eval_results: list[EvaluationResult] = []
     model_forecasts: dict[str, list[dict]] = {}
+    model_evals: dict[str, EvaluationResult] = {}
 
     for model_cfg in models_cfg:
         if not _applies_to(model_cfg, variable_id):
@@ -147,6 +165,7 @@ def run_variable(
             forecast_results.append(fc)
             eval_results.append(ev)
             model_forecasts[model_id] = _records(fc.forecasts)
+            model_evals[model_id] = ev
             logger.info("  ✓ %s / %s", variable_id, model_id)
         except Exception as exc:
             logger.warning("  ✗ %s / %s: %s", variable_id, model_id, exc)
@@ -173,15 +192,34 @@ def run_variable(
         for dr in ensemble.disagreement
     ]
 
+    # Historical observations (transformed, annual) – last 20 years max
+    history = [
+        {"date": ts.strftime("%Y-%m-%d"), "value": round(float(val), 4)}
+        for ts, val in y.iloc[-20:].items()
+    ]
+
+    evaluation = {
+        mid: {
+            "rmse":  round(ev.rmse, 4) if not _isnan(ev.rmse) else None,
+            "mae":   round(ev.mae, 4) if not _isnan(ev.mae) else None,
+            "r2":    round(ev.r2, 4) if not _isnan(ev.r2) else None,
+            "n_obs": ev.n_obs,
+            "backtest": ev.details.get("backtest", []),
+        }
+        for mid, ev in model_evals.items()
+    }
+
     return {
         "variable_id": variable_id,
         "run_date": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+        "history": history,
         "ensemble": {
             "weighting": ensemble.weighting,
             "forecasts": _records(ensemble.forecasts),
             "weights": {k: round(v, 4) for k, v in ensemble.weights.items()},
         },
         "models": model_forecasts,
+        "evaluation": evaluation,
         "disagreement": disagreement,
     }
 
@@ -205,7 +243,7 @@ def run_all(
         if y is None:
             logger.warning("%s: no raw data found – skipping.", variable_id)
             continue
-        result = run_variable(variable_id, y, X_all, models_cfg)
+        result = run_variable(variable_id, y, X_all, models_cfg, var_cfg=var)
         if result:
             results[variable_id] = result
 
