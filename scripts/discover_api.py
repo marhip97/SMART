@@ -17,7 +17,8 @@ NBD_BASE = "https://data.norges-bank.no/api/data"
 SSB_TABLES = {
     "bnp_fastland":   "09190",
     "kpi":            "03013",
-    "ledighet_nav":   "05111",
+    "kpi_jae":        "05327",
+    "ledighet_aku":   "05111",
     "lonnsvekst":     "11417",
     "boligprisvekst": "07230",
 }
