@@ -7,9 +7,9 @@ build/
 .env
 .venv/
 venv/
-*.parquet
-data/raw/
-data/processed/
+# Data files are committed so the pipeline can store vintages and forecasts.
+# Only ignore local scratch files that should never be tracked.
+data/raw/.gitkeep_do_not_delete
 .pytest_cache/
 .coverage
 htmlcov/

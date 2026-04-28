@@ -55,7 +55,7 @@ variables:
     source_params:
       table_id: "05327"              # KPI-JA og KPI-JAE, etter konsumgruppe (SSB)
       filters:
-        Konsumgrp: ["TOTAL"]
+        Konsumgrp: ["JAE_TOTAL"]
         ContentsCode: ["Tolvmanedersendring"]
         Tid: ["*"]
 

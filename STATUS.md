@@ -23,11 +23,7 @@ Levende status- og fremdriftsprotokoll. Oppdateres av prosjektleder (Claude Code
 
 ## Til avklaring (åpne spørsmål til prosjekteier)
 
-### kpi_jae SSB-filter (oppdaget 2026-04-27)
-- **Hva**: `Konsumgrp: ["KPI-JAE"]` er ikke en gyldig kode i SSB tabell 03013 (tabell bruker COICOP-koder: TOTAL, 01, 02, ...).
-- **Alternativene**: (a) `Konsumgrp: ["KPIJAE"]` – bestemmelsen uten bindestrek kan være et SSB-spesifikt aggregat-kode; (b) bruk et annet SSB-tabellnummer dedikert til KPI-JAE.
-- **Anbefaling**: Konfigurasjonen er oppdatert til `KPIJAE` (uten bindestrek). Neste CI-kjøring bekrefter om dette er gyldig; ved feil vises full kodeliste i feilemelding.
-- **Blokkerer**: Kun kpi_jae-variabelen. Alle 10 øvrige variabler fungerer.
+*(Ingen åpne avklaringer.)*
 
 ## Risikoer som har materialisert seg
 *(Ingen registrert ennå.)*
@@ -35,6 +31,14 @@ Levende status- og fremdriftsprotokoll. Oppdateres av prosjektleder (Claude Code
 ---
 
 ## Logg
+
+### 2026-04-28 – .gitignore-fix: pipeline kan nå committe datavintagé
+- Fjernet `data/raw/`, `data/processed/` og `*.parquet` fra `.gitignore` –
+  disse blokkerte `git add data/raw/` i CI og hindret vintagelagring.
+- 12/12 variabler hentes uten feil (bekreftet i forrige sesjon).
+- **kpi_jae endelig løsning**: tabell 05327, `Konsumgrp: ["JAE_TOTAL"]`, `ContentsCode: ["Tolvmanedersendring"]`.
+- Branch `claude/review-smart-project-yLCxR` klar for merge til main.
+- **Neste**: merge til main → CI kjører automatisk → dashboard deployes til GitHub Pages.
 
 ### 2026-04-27 – M4 fullført: Dashboard v1
 - `dashboard/index.html`, `dashboard/style.css`, `dashboard/app.js`: statisk Plotly-dashboard med
@@ -140,7 +144,7 @@ Levende status- og fremdriftsprotokoll. Oppdateres av prosjektleder (Claude Code
 | M2 – Modeller v1 | 🟢 Fullført | 2026-04-26 |
 | M3 – Kryssjekk og ensemble | 🟢 Fullført | 2026-04-27 |
 | M4 – Dashboard v1 | 🟢 Fullført | 2026-04-27 |
-| M5 – QA, dokumentasjon, lansering | ⚪ Ikke startet | – |
+| M5 – QA, dokumentasjon, lansering | 🟡 Pågår | – |
 | M6 – Drift og iterasjon | ⚪ Ikke startet | – |
 
 **Statuslegende:** 🟢 Fullført · 🟡 Pågår · 🔴 Blokkert · ⚪ Ikke startet
