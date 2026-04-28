@@ -120,7 +120,7 @@ Alle kilder må verifiseres mot lisens/bruksvilkår før produksjonssetting.
 | **M2** | Modeller v1 | 5 modeller implementert og backtestet (ARIMA, VAR, BVAR, DFM, AR-X, ML-baseline). | ✅ Fullført | 2026-04-26 |
 | **M3** | Kryssjekk og ensemble | Avviksmål, vekting, aggregert prognose med kvantiler 10/50/90. | ✅ Fullført | 2026-04-27 |
 | **M4** | Dashboard v1 | Publisert på GitHub Pages med automatisk ukentlig oppdatering. | ✅ Fullført | 2026-04-28 |
-| **M5** | QA, dokumentasjon, lansering | Tester, modellkort, brukerveiledning. Versjon 1.0. | 🔄 Pågår | – |
+| **M5** | QA, dokumentasjon, lansering | Tester, modellkort, brukerveiledning. Versjon 1.0. | 🔄 Pågår | Startet 2026-04-28 |
 | **M6** | Drift og iterasjon | Løpende vedlikehold, utvidelser etter prioritet fra prosjekteier. | ⏳ Ikke startet | – |
 
 Tidsestimatet er veiledende. Prosjektleder skal varsle prosjekteier ved avvik fra planen.

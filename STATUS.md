@@ -32,6 +32,18 @@ Levende status- og fremdriftsprotokoll. Oppdateres av prosjektleder (Claude Code
 
 ## Logg
 
+### 2026-04-28 – M5 pågår: dashboard v2 – historikk, treffsikkerhet, boligprisvekst-fix
+- **boligprisvekst-fix**: rådata var indeksnivå (94–152); `_apply_transform()` i runner konverterer nå til YoY % før modellering. Prognoseversier oppdatert til ~2–10 % (korrekt størrelsesorden).
+- **Historiske observasjoner**: siste 20 år med faktiske data inkludert i forecast-JSON (`history`-felt) og vist som grå referanselinje i begge grafvisninger.
+- **Treffsikkerhetstabell**: RMSE, MAE, R² (out-of-sample) og antall evalueringsperioder per modell. Beste RMSE uthevet grønt, negativ R² rød. Walk-forward backtest-historikk (faktisk vs spådd per år) lagret i JSON.
+- **Modell-backtest-linjer**: stiplede linjer i enkeltmodell-grafen viser historiske walk-forward-prognoser.
+- **Toggle** øverst i grafen for å bytte mellom ensemble-fan og enkeltmodeller.
+- **Nøkkeltall-rad**: siste faktiske obs + tre prognoseår med usikkerhetsintervall vises under variabeltittelen.
+- **Variabelbeskrivelse** per variabel.
+- **Språk og design**: gjennomgående mer pedagogisk norsk, bedre farger, spinner-animasjon, row-hover.
+- Alle 7 forecast-JSON-filer oppdatert med ny struktur (`history`, `evaluation`, `backtest`).
+- 122/122 tester grønt.
+
 ### 2026-04-28 – PR #10 merget til main: full CI/CD-kjede aktiv
 - PR #10 merget. Main inneholder nå hele prosjektet (94 filer, 8 936 linjer).
 - Datavintagé (12/12 variabler) og prognoseresultater (7/7 målvariabler) er committet til repo.
