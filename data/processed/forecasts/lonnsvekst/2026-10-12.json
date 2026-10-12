@@ -1,0 +1,178 @@
+{
+  "variable_id": "lonnsvekst",
+  "run_date": "2026-10-12",
+  "history": [
+    {
+      "date": "2017-01-01",
+      "value": 2.4
+    },
+    {
+      "date": "2018-01-01",
+      "value": 2.9
+    },
+    {
+      "date": "2019-01-01",
+      "value": 3.5
+    },
+    {
+      "date": "2020-01-01",
+      "value": 3.1
+    },
+    {
+      "date": "2021-01-01",
+      "value": 3.7
+    },
+    {
+      "date": "2022-01-01",
+      "value": 4.1
+    },
+    {
+      "date": "2023-01-01",
+      "value": 5.3
+    },
+    {
+      "date": "2024-01-01",
+      "value": 5.4
+    },
+    {
+      "date": "2025-01-01",
+      "value": 5.2
+    }
+  ],
+  "ensemble": {
+    "weighting": "performance",
+    "forecasts": [
+      {
+        "date": "2026-01-01",
+        "q10": 3.8451,
+        "q50": 4.5835,
+        "q90": 6.2182
+      },
+      {
+        "date": "2027-01-01",
+        "q10": 3.0072,
+        "q50": 5.1337,
+        "q90": 7.2687
+      },
+      {
+        "date": "2028-01-01",
+        "q10": 2.3957,
+        "q50": 5.2402,
+        "q90": 7.9229
+      }
+    ],
+    "weights": {
+      "arima": 0.5,
+      "var": 0.5
+    }
+  },
+  "models": {
+    "arima": [
+      {
+        "date": "2026-01-01",
+        "q10": 3.8253,
+        "q50": 5.1437,
+        "q90": 6.462
+      },
+      {
+        "date": "2027-01-01",
+        "q10": 2.7715,
+        "q50": 5.1391,
+        "q90": 7.5066
+      },
+      {
+        "date": "2028-01-01",
+        "q10": 2.0684,
+        "q50": 5.139,
+        "q90": 8.2097
+      }
+    ],
+    "var": [
+      {
+        "date": "2026-01-01",
+        "q10": 4.0234,
+        "q50": 4.0234,
+        "q90": 4.0234
+      },
+      {
+        "date": "2027-01-01",
+        "q10": 5.1282,
+        "q50": 5.1282,
+        "q90": 5.1283
+      },
+      {
+        "date": "2028-01-01",
+        "q10": 5.3414,
+        "q50": 5.3414,
+        "q90": 5.3415
+      }
+    ]
+  },
+  "evaluation": {
+    "arima": {
+      "rmse": null,
+      "mae": null,
+      "r2": null,
+      "n_obs": 0,
+      "backtest": []
+    },
+    "var": {
+      "rmse": null,
+      "mae": null,
+      "r2": null,
+      "n_obs": 0,
+      "backtest": []
+    }
+  },
+  "disagreement": [
+    {
+      "horizon_year": 1,
+      "spread": 1.1203,
+      "std": 0.5601,
+      "ensemble_q50": 4.5835,
+      "high_disagreement": true,
+      "outlier_models": []
+    },
+    {
+      "horizon_year": 2,
+      "spread": 0.0108,
+      "std": 0.0054,
+      "ensemble_q50": 5.1337,
+      "high_disagreement": false,
+      "outlier_models": []
+    },
+    {
+      "horizon_year": 3,
+      "spread": 0.2024,
+      "std": 0.1012,
+      "ensemble_q50": 5.2402,
+      "high_disagreement": false,
+      "outlier_models": []
+    }
+  ],
+  "model_health": {
+    "n_obs": 9,
+    "included": [
+      "arima",
+      "var"
+    ],
+    "excluded": [
+      {
+        "model": "bvar",
+        "reason": "insufficient_data (9 < 15)"
+      },
+      {
+        "model": "dfm",
+        "reason": "insufficient_data (9 < 15)"
+      },
+      {
+        "model": "arx",
+        "reason": "insufficient_data (9 < 15)"
+      },
+      {
+        "model": "ml_baseline",
+        "reason": "insufficient_data (9 < 20)"
+      }
+    ]
+  }
+}

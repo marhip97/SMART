@@ -1,6 +1,6 @@
 {
   "variable_id": "ledighet_aku",
-  "run_date": "2026-10-05",
+  "run_date": "2026-10-12",
   "history": [
     {
       "date": "2006-01-01",
@@ -325,7 +325,7 @@
         {
           "date": "2003-01-01",
           "actual": 4.5,
-          "forecast": 4.1649
+          "forecast": 4.1648
         },
         {
           "date": "2004-01-01",
