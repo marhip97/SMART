@@ -1,6 +1,6 @@
 {
   "variable_id": "kpi",
-  "run_date": "2026-11-02",
+  "run_date": "2026-11-09",
   "history": [
     {
       "date": "2006-01-01",
@@ -218,7 +218,7 @@
   "evaluation": {
     "arima": {
       "rmse": 1.2465,
-      "mae": 0.9793,
+      "mae": 0.978,
       "r2": -0.1547,
       "n_obs": 36,
       "backtest": [
@@ -300,12 +300,12 @@
         {
           "date": "2005-01-01",
           "actual": 1.5333,
-          "forecast": 0.98
+          "forecast": 1.0555
         },
         {
           "date": "2006-01-01",
           "actual": 2.3333,
-          "forecast": 1.2066
+          "forecast": 1.2254
         },
         {
           "date": "2007-01-01",
@@ -335,12 +335,12 @@
         {
           "date": "2012-01-01",
           "actual": 0.6833,
-          "forecast": 0.8748
+          "forecast": 0.8969
         },
         {
           "date": "2013-01-01",
           "actual": 2.1167,
-          "forecast": -0.0279
+          "forecast": -0.0536
         },
         {
           "date": "2014-01-01",
